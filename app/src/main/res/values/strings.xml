@@ -7,4 +7,7 @@
     <string name="password">Password</string>
     <string name="proceed">PROCEED</string>
     <string name="jkuat_logo">jkuat-logo</string>
+    <string name="active_sessions">Active Sessions</string>
+    <string name="action">Action</string>
+    <string name="session">Session</string>
 </resources>
