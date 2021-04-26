@@ -5,9 +5,18 @@
     <string name="maina_josephat_students_jkuat_ac_ke">maina.josephat@dtudents.jkuat.ac.ke</string>
     <string name="enter_your_password">Enter Your Password</string>
     <string name="password">Password</string>
-    <string name="proceed">PROCEED</string>
+    <string name="proceed">proceed</string>
     <string name="jkuat_logo">jkuat-logo</string>
     <string name="active_sessions">Active Sessions</string>
     <string name="action">Action</string>
     <string name="session">Session</string>
+    <string name="first_time_login">First Time Login</string>
+    <string name="first_time_description">A code has been sent to your school email address. Please Enter the code below to proceed.</string>
+    <string name="password_description_text">Please enter a strong password that will be used during voting sessions to verify your  identity.</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="submit">submit</string>
+    <string name="jkuat_name">Jomo Kenyatta University of Agriculture and Technology</string>
+    <string name="submit_vote">SUBMIT VOTE</string>
+    <string name="school_representative">School Representative</string>
+    <string name="otp">OTP</string>
 </resources>
