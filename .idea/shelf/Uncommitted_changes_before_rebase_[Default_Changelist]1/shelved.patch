@@ -1,0 +1,278 @@
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <!-- Base application theme. -->\r\n    <style name=\"AppTheme\" parent=\"Theme.AppCompat.Light.DarkActionBar\">\r\n        <!-- Customize your theme here. -->\r\n        <item name=\"colorPrimary\">@color/colorPrimary</item>\r\n        <item name=\"colorPrimaryDark\">@color/colorPrimaryDark</item>\r\n        <item name=\"colorAccent\">@color/colorAccent</item>\r\n    </style>\r\n\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(revision 39c91751514d04a891f507dbd10af93fd01f99cb)
++++ app/src/main/res/values/styles.xml	(date 1619237966836)
+@@ -1,6 +1,6 @@
+ <resources>
+     <!-- Base application theme. -->
+-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
++    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+         <!-- Customize your theme here. -->
+         <item name="colorPrimary">@color/colorPrimary</item>
+         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<resources>\r\n    <color name=\"colorPrimary\">#6200EE</color>\r\n    <color name=\"colorPrimaryDark\">#3700B3</color>\r\n    <color name=\"colorAccent\">#03DAC5</color>\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(revision 39c91751514d04a891f507dbd10af93fd01f99cb)
++++ app/src/main/res/values/colors.xml	(date 1619238042063)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <color name="colorPrimary">#6200EE</color>
+-    <color name="colorPrimaryDark">#3700B3</color>
+-    <color name="colorAccent">#03DAC5</color>
++    <color name="colorPrimary">#20BD00</color>
++    <color name="colorPrimaryDark">#178C00</color>
++    <color name="colorAccent">#FFFFFF</color>
+ </resources>
+\ No newline at end of file
+Index: app/src/main/java/com/android/jkura/LoginActivity.java
+===================================================================
+--- app/src/main/java/com/android/jkura/LoginActivity.java	(date 1619237790912)
++++ app/src/main/java/com/android/jkura/LoginActivity.java	(date 1619237790912)
+@@ -0,0 +1,14 @@
++package com.android.jkura;
++
++import androidx.appcompat.app.AppCompatActivity;
++
++import android.os.Bundle;
++
++public class LoginActivity extends AppCompatActivity {
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_login);
++    }
++}
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+===================================================================
+--- .idea/jarRepositories.xml	(date 1619237674934)
++++ .idea/jarRepositories.xml	(date 1619237674934)
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="BintrayJCenter" />
++      <option name="name" value="BintrayJCenter" />
++      <option name="url" value="https://jcenter.bintray.com/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="Google" />
++      <option name="name" value="Google" />
++      <option name="url" value="https://dl.google.com/dl/android/maven2/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/drawable/circular_background.xml
+===================================================================
+--- app/src/main/res/drawable/circular_background.xml	(date 1619239726626)
++++ app/src/main/res/drawable/circular_background.xml	(date 1619239726626)
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<shape xmlns:android="http://schemas.android.com/apk/res/android"
++    android:shape="oval">
++
++    <solid android:color="@color/colorAccent" />
++
++    <size
++        android:width="90dp"
++        android:height="90dp" />
++</shape>
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"1.8\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+===================================================================
+--- .idea/gradle.xml	(revision 39c91751514d04a891f507dbd10af93fd01f99cb)
++++ .idea/gradle.xml	(date 1619237614128)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+@@ -14,6 +15,7 @@
+           </set>
+         </option>
+         <option name="resolveModulePerSourceSet" value="false" />
++        <option name="useQualifiedModuleNames" value="true" />
+       </GradleProjectSettings>
+     </option>
+   </component>
+Index: app/src/main/res/drawable-mdpi/rounded_coner_backgroung.xml
+===================================================================
+--- app/src/main/res/drawable-mdpi/rounded_coner_backgroung.xml	(date 1619241252073)
++++ app/src/main/res/drawable-mdpi/rounded_coner_backgroung.xml	(date 1619241252073)
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="utf-8"?>
++<selector xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <item android:state_enabled="true">
++        <shape android:shape="rectangle">
++            <solid android:color="@color/colorAccent"/>
++            <corners android:radius="6dp"/>
++        </shape>
++    </item>
++
++
++</selector>
+\ No newline at end of file
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">JKURA</string>\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision 39c91751514d04a891f507dbd10af93fd01f99cb)
++++ app/src/main/res/values/strings.xml	(date 1619241038405)
+@@ -1,3 +1,7 @@
+ <resources>
+     <string name="app_name">JKURA</string>
++    <string name="jkuat_logo">jkuat_logo</string>
++    <string name="jkuat">jkuat</string>
++    <string name="election_management_system">Election Management System</string>
++    <string name="maina_josephat_students_jkuat_ac_ke">maina.josephat@students.jkuat.ac.ke</string>
+ </resources>
+\ No newline at end of file
+Index: .idea/vcs.xml
+===================================================================
+--- .idea/vcs.xml	(date 1619237614064)
++++ .idea/vcs.xml	(date 1619237614064)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_login.xml
+===================================================================
+--- app/src/main/res/layout/activity_login.xml	(date 1619285506528)
++++ app/src/main/res/layout/activity_login.xml	(date 1619285506528)
+@@ -0,0 +1,71 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:background="@color/colorPrimary"
++    tools:context=".LoginActivity">
++
++
++    <RelativeLayout
++        android:id="@+id/relativeLayout"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginStart="30dp"
++        android:background="@drawable/circular_background"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintVertical_bias="0.07000002">
++
++        <ImageView
++            android:layout_width="70dp"
++            android:layout_height="70dp"
++            android:layout_centerHorizontal="true"
++            android:layout_centerVertical="true"
++            android:contentDescription="@string/jkuat_logo"
++            android:src="@drawable/jkuat_logo" />
++    </RelativeLayout>
++
++    <TextView
++        android:id="@+id/textView"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginStart="20dp"
++        android:fontFamily="@font/montserrat_bold"
++        android:text="@string/jkuat"
++        android:textAllCaps="true"
++        android:textColor="@color/colorAccent"
++        android:textSize="40sp"
++        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
++        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:fontFamily="@font/montserrat_regular"
++        android:text="@string/election_management_system"
++        android:textAllCaps="true"
++        android:textColor="@color/colorAccent"
++        android:textSize="14sp"
++        app:layout_constraintStart_toStartOf="@+id/textView"
++        app:layout_constraintTop_toBottomOf="@+id/textView" />
++
++
++    <TextView
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:background="@drawable/rounded_coner_backgroung"
++        android:fontFamily="@font/montserrat_regular"
++        android:padding="15dp"
++        android:layout_marginTop="15dp"
++        android:text="@string/maina_josephat_students_jkuat_ac_ke"
++        android:textColor="@color/colorPrimary"
++        android:textSize="14sp"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
++
++
++</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: .idea/compiler.xml
+===================================================================
+--- .idea/compiler.xml	(date 1619237614088)
++++ .idea/compiler.xml	(date 1619237614088)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <bytecodeTargetLevel target="1.8" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/dictionaries/Josephat_Ndung_u.xml
+===================================================================
+--- .idea/dictionaries/Josephat_Ndung_u.xml	(date 1619241013099)
++++ .idea/dictionaries/Josephat_Ndung_u.xml	(date 1619241013099)
+@@ -0,0 +1,9 @@
++<component name="ProjectDictionaryState">
++  <dictionary name="Josephat Ndung'u">
++    <words>
++      <w>jkuat</w>
++      <w>josephat</w>
++      <w>maina</w>
++    </words>
++  </dictionary>
++</component>
+\ No newline at end of file
