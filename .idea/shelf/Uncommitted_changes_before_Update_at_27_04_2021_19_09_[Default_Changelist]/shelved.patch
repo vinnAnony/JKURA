@@ -1,0 +1,822 @@
+Index: app/src/main/java/com/android/jkura/SplashScreenActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.jkura;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.os.Handler;\r\n\r\npublic class SplashScreenActivity extends AppCompatActivity {\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_splash_screen);\r\n\r\n       startActivity(new Intent(this, HomeActivity.class));\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/SplashScreenActivity.java	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/java/com/android/jkura/SplashScreenActivity.java	(date 1619539729886)
+@@ -2,11 +2,16 @@
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
++import android.content.Intent;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.os.Handler;
++
++import androidx.appcompat.app.AppCompatActivity;
++import android.os.Handler;
+ 
+ public class SplashScreenActivity extends AppCompatActivity {
++    private final int SPLASH_DISPLAY_LENGTH = 1000;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -14,5 +19,15 @@
+         setContentView(R.layout.activity_splash_screen);
+ 
+        startActivity(new Intent(this, HomeActivity.class));
++
++        new Handler().postDelayed(new Runnable(){
++            @Override
++            public void run() {
++                /* Create an Intent that will start the Menu-Activity. */
++                Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
++                SplashScreenActivity.this.startActivity(mainIntent);
++                SplashScreenActivity.this.finish();
++            }
++        }, SPLASH_DISPLAY_LENGTH);
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_first_time_login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/layout1\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/jkuraGreen\">\r\n\r\n    <RelativeLayout\r\n        android:id=\"@+id/imageBackground\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:background=\"@drawable/circular_background\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.050000012\">\r\n\r\n        <ImageView\r\n            android:id=\"@+id/imageView2\"\r\n            android:layout_width=\"80dp\"\r\n            android:layout_height=\"80dp\"\r\n            android:layout_centerHorizontal=\"true\"\r\n            android:layout_centerVertical=\"true\"\r\n            android:src=\"@drawable/jkuat_logo\"\r\n            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.049\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\"\r\n            app:layout_constraintVertical_bias=\"0.06999999\"\r\n            android:contentDescription=\"@string/jkuat_logo\" />\r\n\r\n    </RelativeLayout>\r\n\r\n    <TextView\r\n        android:id=\"@+id/first_time_label\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:text=\"@string/first_time_login\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/imageBackground\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/first_time_description_text\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:textAlignment=\"center\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:layout_marginEnd=\"30dp\"\r\n        android:text=\"@string/first_time_description\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/first_time_label\" />\r\n\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/et_password\"\r\n        android:layout_width=\"0dp\"\r\n        style=\"@style/TextInputLayoutStyle\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"30dp\"\r\n        android:layout_marginEnd=\"20dp\"\r\n        android:hint=\"@string/otp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/first_time_description_text\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:inputType=\"textPassword\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"15dp\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:text=\"@string/jkuat\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"41sp\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/imageBackground\"\r\n        app:layout_constraintTop_toTopOf=\"@+id/imageBackground\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView6\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"7dp\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"@string/election_management_system\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"14sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"@+id/textView\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\r\n\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/materialButton\"\r\n        style=\"@style/Widget.MaterialComponents.Button.OutlinedButton\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"40dp\"\r\n        android:layout_marginEnd=\"40dp\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:padding=\"15dp\"\r\n        android:text=\"@string/submit\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.92\"\r\n        app:strokeColor=\"@color/white\"\r\n        app:strokeWidth=\"2dp\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView3\"\r\n        android:layout_width=\"364dp\"\r\n        android:layout_height=\"27dp\"\r\n        android:layout_marginBottom=\"5dp\"\r\n        android:gravity=\"center\"\r\n        android:text=\"@string/jkuat_name\"\r\n        android:textColor=\"@android:color/white\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\" />\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_first_time_login.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/res/layout/activity_first_time_login.xml	(date 1619539512881)
+@@ -109,7 +109,7 @@
+ 
+ 
+     <com.google.android.material.button.MaterialButton
+-        android:id="@+id/materialButton"
++        android:id="@+id/submitOTPBtn"
+         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+Index: app/src/main/java/com/android/jkura/HomeActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.jkura;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport com.razerdp.widget.animatedpieview.AnimatedPieView;\r\nimport com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;\r\nimport com.razerdp.widget.animatedpieview.data.SimplePieInfo;\r\n\r\npublic class HomeActivity extends AppCompatActivity {\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_home);\r\n\r\n        AnimatedPieView animatedPieView = findViewById(R.id.pie_chart);\r\n        AnimatedPieViewConfig config = new AnimatedPieViewConfig();\r\n        config.startAngle(-90)// Starting angle offset\r\n                .addData(new SimplePieInfo(30, getResources().getColor(R.color.pieBlue), \"Number 1\"))//Data (bean that implements the IPieInfo interface)\r\n                .addData(new SimplePieInfo(18, getResources().getColor(R.color.pieYellow), \"Number 2\"))\r\n                .addData(new SimplePieInfo(35, getResources().getColor(R.color.pieOthers), \"Others\"))\r\n                .duration(2000)\r\n        .drawText(true)\r\n        .textSize(30);// draw pie animation duration\r\n\r\n        animatedPieView.applyConfig(config);\r\n        animatedPieView.start();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/HomeActivity.java	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/java/com/android/jkura/HomeActivity.java	(date 1619539675897)
+@@ -1,8 +1,11 @@
+ package com.android.jkura;
+ 
+-import androidx.appcompat.app.AppCompatActivity;
+-
++import android.content.Intent;
+ import android.os.Bundle;
++import android.view.View;
++import android.widget.LinearLayout;
++
++import androidx.appcompat.app.AppCompatActivity;
+ 
+ import com.razerdp.widget.animatedpieview.AnimatedPieView;
+ import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
+@@ -27,5 +30,13 @@
+ 
+         animatedPieView.applyConfig(config);
+         animatedPieView.start();
++
++        LinearLayout sessionActionBtn = findViewById(R.id.linearLayout2);
++        sessionActionBtn.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                startActivity(new Intent(HomeActivity.this,AspirantSelectionActivity.class));
++            }
++        });
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/android/jkura/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.jkura;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\n\r\npublic class LoginActivity extends AppCompatActivity {\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_login);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/LoginActivity.java	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/java/com/android/jkura/LoginActivity.java	(date 1619539512848)
+@@ -1,8 +1,12 @@
+ package com.android.jkura;
+ 
+-import androidx.appcompat.app.AppCompatActivity;
+-
++import android.content.Intent;
+ import android.os.Bundle;
++import android.view.View;
++
++import com.google.android.material.button.MaterialButton;
++
++import androidx.appcompat.app.AppCompatActivity;
+ 
+ public class LoginActivity extends AppCompatActivity {
+ 
+@@ -10,5 +14,13 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_login);
++
++        MaterialButton proceedLogin = findViewById(R.id.proceedLogin);
++        proceedLogin.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                startActivity(new Intent(LoginActivity.this,FirstTimeLoginActivity.class));
++            }
++        });
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/aspirant_card.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:id=\"@+id/aspirantCard\">\r\n\r\n    <com.google.android.material.card.MaterialCardView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"70dp\"\r\n        android:layout_gravity=\"center\"\r\n        app:cardCornerRadius=\"8dp\"\r\n        app:cardElevation=\"8dp\">\r\n\r\n        <androidx.constraintlayout.widget.ConstraintLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\">\r\n\r\n            <ImageView\r\n                android:id=\"@+id/imageView\"\r\n                android:layout_width=\"50dp\"\r\n                android:layout_height=\"50dp\"\r\n                android:layout_gravity=\"center_vertical\"\r\n                android:src=\"@drawable/logo\"\r\n                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintHorizontal_bias=\"0.044\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:fontFamily=\"@font/montserrat_black\"\r\n                android:text=\"MAINA JOSEPHAT NDUNG'U\"\r\n                android:textColor=\"@color/jkuraGreen\"\r\n                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintHorizontal_bias=\"0.597\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toTopOf=\"parent\"\r\n                app:layout_constraintVertical_bias=\"0.196\" />\r\n\r\n            <TextView\r\n                android:layout_width=\"250dp\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:fontFamily=\"@font/montserrat_medium\"\r\n                android:text=\"BSC. MATHEMATICS AND COMPUTER SCIENCE\"\r\n                android:textAlignment=\"center\"\r\n                android:textColor=\"@color/jkuraGreen\"\r\n                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintHorizontal_bias=\"0.614\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toTopOf=\"parent\"\r\n                app:layout_constraintVertical_bias=\"1.0\" />\r\n        </androidx.constraintlayout.widget.ConstraintLayout>\r\n    </com.google.android.material.card.MaterialCardView>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/aspirant_card.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/res/layout/aspirant_card.xml	(date 1619539512889)
+@@ -1,11 +1,12 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    android:id="@+id/aspirantCard">
++    android:layout_height="wrap_content"
++    android:layout_marginBottom="10dp"
++    xmlns:app="http://schemas.android.com/apk/res-auto">
+ 
+     <com.google.android.material.card.MaterialCardView
++        android:id="@+id/aspirantCard"
+         android:layout_width="match_parent"
+         android:layout_height="70dp"
+         android:layout_gravity="center"
+Index: app/src/main/res/layout/activity_aspirant_selection.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/jkuraGreen\"\r\n    tools:context=\".AspirantSelectionActivity\">\r\n\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"School:\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"15sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.072\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.145\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/aspirantSchool\"\r\n        android:layout_width=\"250dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"School of Mathematical and Physical Sciences\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"15sp\"\r\n        android:textAlignment=\"center\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.768\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.145\" />\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"Department:\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"15sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.083\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.202\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/aspirantDepartment\"\r\n        android:layout_width=\"250dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"Pure and Applied Mathematics\"\r\n        android:textAlignment=\"center\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"15sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.832\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.207\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/aspirantPosition\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:text=\"@string/school_representative\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"20sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.496\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.253\" />\r\n\r\n    <LinearLayout\r\n        android:id=\"@+id/linearLayout\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"vertical\"\r\n        android:layout_margin=\"20dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"1.0\"\r\n        app:layout_constraintStart_toEndOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.393\">\r\n\r\n        <androidx.recyclerview.widget.RecyclerView\r\n            android:id=\"@+id/aspirantsRV\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\" />\r\n\r\n    </LinearLayout>\r\n\r\n    <ImageView\r\n        android:layout_width=\"80dp\"\r\n        android:layout_height=\"80dp\"\r\n        android:src=\"@drawable/jkuat_logo\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.049\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.024\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:text=\"@string/jkuat\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"25sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.365\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.022\" />\r\n\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"@string/election_management_system\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"15sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.776\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.081\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView2\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"@string/jkuat_name\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"12sp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.49\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.977\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_aspirant_selection.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/res/layout/activity_aspirant_selection.xml	(date 1619539512878)
+@@ -63,10 +63,10 @@
+         android:textSize="15sp"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="0.832"
++        app:layout_constraintHorizontal_bias="0.875"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.207" />
++        app:layout_constraintVertical_bias="0.202" />
+ 
+     <TextView
+         android:id="@+id/aspirantPosition"
+@@ -99,7 +99,9 @@
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/aspirantsRV"
+             android:layout_width="match_parent"
+-            android:layout_height="wrap_content" />
++            android:layout_height="wrap_content"
++            android:layout_marginTop="20dp"
++            android:layout_marginBottom="7dp"/>
+ 
+     </LinearLayout>
+ 
+@@ -158,4 +160,27 @@
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintVertical_bias="0.977" />
+ 
++    <RelativeLayout
++        android:id="@+id/aspirantSelectPBRL"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:background="@drawable/progressbar_bg"
++        android:elevation="8dp"
++        android:padding="20dp"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        android:visibility="visible">
++        <ProgressBar
++            android:id="@+id/aspirantSelectPB"
++            android:layout_width="40dp"
++            android:layout_height="40dp"
++            android:layout_centerInParent="true"
++            android:indeterminate="true"
++            android:indeterminateDrawable="@drawable/progress_color"
++            android:progress="0"
++            android:visibility="visible"/>
++    </RelativeLayout>
++
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_provide_password.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/layout1\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/jkuraGreen\">\r\n\r\n    <RelativeLayout\r\n        android:id=\"@+id/imageBackground\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:background=\"@drawable/circular_background\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.050000012\">\r\n\r\n        <ImageView\r\n            android:id=\"@+id/imageView2\"\r\n            android:layout_width=\"80dp\"\r\n            android:layout_height=\"80dp\"\r\n            android:layout_centerHorizontal=\"true\"\r\n            android:layout_centerVertical=\"true\"\r\n            android:src=\"@drawable/jkuat_logo\"\r\n            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.049\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\"\r\n            app:layout_constraintVertical_bias=\"0.06999999\"\r\n            android:contentDescription=\"@string/jkuat_logo\" />\r\n\r\n    </RelativeLayout>\r\n\r\n    <TextView\r\n        android:id=\"@+id/first_time_label\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:text=\"@string/first_time_login\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/imageBackground\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/first_time_description_text\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:textAlignment=\"center\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:layout_marginEnd=\"30dp\"\r\n        android:text=\"@string/password_description_text\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/first_time_label\" />\r\n\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/et_password\"\r\n        android:layout_width=\"0dp\"\r\n        style=\"@style/TextInputLayoutStyle\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"30dp\"\r\n        android:layout_marginEnd=\"20dp\"\r\n        android:hint=\"@string/password\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/first_time_description_text\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:inputType=\"textPassword\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/et_password_confirm\"\r\n        android:layout_width=\"0dp\"\r\n        style=\"@style/TextInputLayoutStyle\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"5dp\"\r\n        android:layout_marginEnd=\"20dp\"\r\n        android:hint=\"@string/confirm_password\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/et_password\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:inputType=\"textPassword\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"15dp\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:text=\"@string/jkuat\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"41sp\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/imageBackground\"\r\n        app:layout_constraintTop_toTopOf=\"@+id/imageBackground\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView6\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"7dp\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"@string/election_management_system\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"14sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"@+id/textView\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\r\n\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/materialButton\"\r\n        style=\"@style/Widget.MaterialComponents.Button.OutlinedButton\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"40dp\"\r\n        android:layout_marginEnd=\"40dp\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:padding=\"15dp\"\r\n        android:text=\"@string/submit\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.92\"\r\n        app:strokeColor=\"@color/white\"\r\n        app:strokeWidth=\"2dp\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView3\"\r\n        android:layout_width=\"364dp\"\r\n        android:layout_height=\"27dp\"\r\n        android:layout_marginBottom=\"5dp\"\r\n        android:gravity=\"center\"\r\n        android:text=\"@string/jkuat_name\"\r\n        android:textColor=\"@android:color/white\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\" />\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_provide_password.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/res/layout/activity_provide_password.xml	(date 1619539512886)
+@@ -128,7 +128,7 @@
+ 
+ 
+     <com.google.android.material.button.MaterialButton
+-        android:id="@+id/materialButton"
++        android:id="@+id/submitFirstPasswordBtn"
+         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+Index: app/src/main/res/drawable/progressbar_bg.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/progressbar_bg.xml	(date 1619539512872)
++++ app/src/main/res/drawable/progressbar_bg.xml	(date 1619539512872)
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <solid android:color="@color/black"/>
++
++    <corners android:radius="100dp"/>
++</shape>
+\ No newline at end of file
+Index: app/src/main/res/drawable/progress_color.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/progress_color.xml	(date 1619539512867)
++++ app/src/main/res/drawable/progress_color.xml	(date 1619539512867)
+@@ -0,0 +1,33 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--use rotate tag to rotate the drawable-->
++<rotate
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    android:fromDegrees="0"
++    android:pivotX="50%"
++    android:pivotY="50%"
++    android:toDegrees="1440">
++
++    <!--shape tag is used to
++        build a shape in XML-->
++    <shape
++        android:innerRadiusRatio="3"
++        android:shape="ring"
++        android:thicknessRatio="8"
++        android:useLevel="false">
++
++        <!--set the size of the shape-->
++        <size
++            android:width="76dip"
++            android:height="76dip" />
++
++        <!--set the color gradients
++            of the shape-->
++        <gradient
++            android:angle="0"
++            android:endColor="#00ffffff"
++            android:startColor="@color/white"
++            android:type="sweep"
++            android:useLevel="false" />
++    </shape>
++
++</rotate>
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"BintrayJCenter\" />\r\n      <option name=\"name\" value=\"BintrayJCenter\" />\r\n      <option name=\"url\" value=\"https://jcenter.bintray.com/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"Google\" />\r\n      <option name=\"name\" value=\"Google\" />\r\n      <option name=\"url\" value=\"https://dl.google.com/dl/android/maven2/\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ .idea/jarRepositories.xml	(date 1619539512812)
+@@ -21,5 +21,10 @@
+       <option name="name" value="Google" />
+       <option name="url" value="https://dl.google.com/dl/android/maven2/" />
+     </remote-repository>
++    <remote-repository>
++      <option name="id" value="maven" />
++      <option name="name" value="maven" />
++      <option name="url" value="https://maven.google.com" />
++    </remote-repository>
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/com/android/jkura/extras/AspirantModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/extras/AspirantModel.java	(date 1619539512856)
++++ app/src/main/java/com/android/jkura/extras/AspirantModel.java	(date 1619539512856)
+@@ -0,0 +1,78 @@
++package com.android.jkura.extras;
++
++import com.google.firebase.database.Exclude;
++
++public class AspirantModel {
++    private String aspirantName;
++    private String aspirantImageURL;
++    private String aspirantPosition;
++    private String aspirantSchool;
++    private String aspirantDepartment;
++    private String key;
++    private int position;
++
++    public AspirantModel() {
++    }
++
++    public AspirantModel(int position) {
++        this.position = position;
++    }
++
++    public AspirantModel(String aspirantName, String aspirantImageURL, String aspirantPosition, String aspirantSchool, String aspirantDepartment) {
++        this.aspirantName = aspirantName;
++        this.aspirantImageURL = aspirantImageURL;
++        this.aspirantPosition = aspirantPosition;
++        this.aspirantSchool = aspirantSchool;
++        this.aspirantDepartment = aspirantDepartment;
++    }
++
++    public String getAspirantName() {
++        return aspirantName;
++    }
++
++    public void setAspirantName(String aspirantName) {
++        this.aspirantName = aspirantName;
++    }
++
++    public String getAspirantImageURL() {
++        return aspirantImageURL;
++    }
++
++    public void setAspirantImageURL(String aspirantImageURL) {
++        this.aspirantImageURL = aspirantImageURL;
++    }
++
++    public String getAspirantPosition() {
++        return aspirantPosition;
++    }
++
++    public void setAspirantPosition(String aspirantPosition) {
++        this.aspirantPosition = aspirantPosition;
++    }
++
++    public String getAspirantSchool() {
++        return aspirantSchool;
++    }
++
++    public void setAspirantSchool(String aspirantSchool) {
++        this.aspirantSchool = aspirantSchool;
++    }
++
++    public String getAspirantDepartment() {
++        return aspirantDepartment;
++    }
++
++    public void setAspirantDepartment(String aspirantDepartment) {
++        this.aspirantDepartment = aspirantDepartment;
++    }
++
++    @Exclude
++    public String getKey() {
++        return key;
++    }
++
++    @Exclude
++    public void setKey(String key) {
++        this.key = key;
++    }
++}
+Index: app/src/main/java/com/android/jkura/extras/AspirantSelectionAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/extras/AspirantSelectionAdapter.java	(date 1619539512858)
++++ app/src/main/java/com/android/jkura/extras/AspirantSelectionAdapter.java	(date 1619539512858)
+@@ -0,0 +1,31 @@
++package com.android.jkura.extras;
++
++import android.view.View;
++import android.view.ViewGroup;
++
++import androidx.annotation.NonNull;
++import androidx.recyclerview.widget.RecyclerView;
++
++public class AspirantSelectionAdapter extends RecyclerView.Adapter<AspirantSelectionAdapter.RecyclerViewHolder> {
++    @NonNull
++    @Override
++    public AspirantSelectionAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
++        return null;
++    }
++
++    @Override
++    public void onBindViewHolder(@NonNull AspirantSelectionAdapter.RecyclerViewHolder holder, int position) {
++
++    }
++
++    @Override
++    public int getItemCount() {
++        return 0;
++    }
++
++    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
++        public RecyclerViewHolder(@NonNull View itemView) {
++            super(itemView);
++        }
++    }
++}
+Index: app/src/main/java/com/android/jkura/FirstTimeLoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.jkura;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\n\r\npublic class FirstTimeLoginActivity extends AppCompatActivity {\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_first_time_login);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/FirstTimeLoginActivity.java	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/java/com/android/jkura/FirstTimeLoginActivity.java	(date 1619539512845)
+@@ -1,8 +1,12 @@
+ package com.android.jkura;
+ 
+-import androidx.appcompat.app.AppCompatActivity;
+-
++import android.content.Intent;
+ import android.os.Bundle;
++import android.view.View;
++
++import com.google.android.material.button.MaterialButton;
++
++import androidx.appcompat.app.AppCompatActivity;
+ 
+ public class FirstTimeLoginActivity extends AppCompatActivity {
+ 
+@@ -10,5 +14,13 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_first_time_login);
++
++        MaterialButton submitOTP = findViewById(R.id.submitOTPBtn);
++        submitOTP.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                startActivity(new Intent(FirstTimeLoginActivity.this,ProvidePasswordActivity.class));
++            }
++        });
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.android.jkura\">\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@drawable/jkuat_logo\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@drawable/jkuat_logo\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".SplashScreenActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <activity android:name=\".ProvidePasswordActivity\" />\r\n        <activity android:name=\".FirstTimeLoginActivity\" />\r\n        <activity android:name=\".HomeActivity\" />\r\n        <activity android:name=\".LoginActivity\" />\r\n        <activity android:name=\".VoteSubmissionActivity\" />\r\n        <activity android:name=\".AspirantSelectionActivity\" />\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/AndroidManifest.xml	(date 1619539512837)
+@@ -2,6 +2,8 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="com.android.jkura">
+ 
++    <uses-permission android:name="android.permission.INTERNET"/>
++
+     <application
+         android:allowBackup="true"
+         android:icon="@drawable/jkuat_logo"
+Index: app/src/main/java/com/android/jkura/AspirantSelectionActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.jkura;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\npublic class AspirantSelectionActivity extends AppCompatActivity implements View.OnClickListener {\r\n    TextView aspirantPositionTV;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_aspirant_selection);\r\n\r\n        aspirantPositionTV = findViewById(R.id.aspirantPosition);\r\n        aspirantPositionTV.setOnClickListener(this);\r\n    }\r\n\r\n    @Override\r\n    public void onClick(View v) {\r\n        if (v.equals(aspirantPositionTV)){\r\n            startActivity(new Intent(this,VoteSubmissionActivity.class));\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/AspirantSelectionActivity.java	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/java/com/android/jkura/AspirantSelectionActivity.java	(date 1619539512842)
+@@ -17,6 +17,7 @@
+ 
+         aspirantPositionTV = findViewById(R.id.aspirantPosition);
+         aspirantPositionTV.setOnClickListener(this);
++
+     }
+ 
+     @Override
+Index: .idea/codeStyles/Project.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/codeStyles/Project.xml	(date 1619539512808)
++++ .idea/codeStyles/Project.xml	(date 1619539512808)
+@@ -0,0 +1,116 @@
++<component name="ProjectCodeStyleConfiguration">
++  <code_scheme name="Project" version="173">
++    <codeStyleSettings language="XML">
++      <indentOptions>
++        <option name="CONTINUATION_INDENT_SIZE" value="4" />
++      </indentOptions>
++      <arrangement>
++        <rules>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>xmlns:android</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>xmlns:.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*:id</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*:name</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>name</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>style</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>ANDROID_ATTRIBUTE_ORDER</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>.*</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++        </rules>
++      </arrangement>
++    </codeStyleSettings>
++  </code_scheme>
++</component>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ .idea/misc.xml	(date 1619539512814)
+@@ -1,6 +1,4 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/build/classes" />
+-  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
+Index: app/google-services.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/google-services.json	(date 1619539512821)
++++ app/google-services.json	(date 1619539512821)
+@@ -0,0 +1,40 @@
++{
++  "project_info": {
++    "project_number": "208604181433",
++    "firebase_url": "https://j-kura-default-rtdb.europe-west1.firebasedatabase.app",
++    "project_id": "j-kura",
++    "storage_bucket": "j-kura.appspot.com"
++  },
++  "client": [
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:208604181433:android:c77768a6f495538b5f7c68",
++        "android_client_info": {
++          "package_name": "com.android.jkura"
++        }
++      },
++      "oauth_client": [
++        {
++          "client_id": "208604181433-q6ooo37ucdqtbpf02gij2boaajjde2ln.apps.googleusercontent.com",
++          "client_type": 3
++        }
++      ],
++      "api_key": [
++        {
++          "current_key": "AIzaSyD2wBm7ZCnAmCSp7U-Qcmo6fX7t58vpFX4"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": [
++            {
++              "client_id": "208604181433-q6ooo37ucdqtbpf02gij2boaajjde2ln.apps.googleusercontent.com",
++              "client_type": 3
++            }
++          ]
++        }
++      }
++    }
++  ],
++  "configuration_version": "1"
++}
+\ No newline at end of file
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nbuildscript {\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n    }\r\n    dependencies {\r\n        classpath \"com.android.tools.build:gradle:4.0.2\"\r\n\r\n        // NOTE: Do not place your application dependencies here; they belong\r\n        // in the individual module build.gradle files\r\n    }\r\n}\r\n\r\nallprojects {\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n    }\r\n}\r\n\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ build.gradle	(date 1619539512898)
+@@ -9,6 +9,7 @@
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files
++        classpath 'com.google.gms:google-services:4.3.5'
+     }
+ }
+ 
+Index: app/src/main/res/layout/activity_login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/jkuraGreen\"\r\n    tools:context=\".LoginActivity\">\r\n\r\n\r\n    <RelativeLayout\r\n        android:id=\"@+id/imageBackground\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:background=\"@drawable/circular_background\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.050000012\">\r\n\r\n        <ImageView\r\n            android:id=\"@+id/imageView2\"\r\n            android:layout_width=\"80dp\"\r\n            android:layout_height=\"80dp\"\r\n            android:layout_centerHorizontal=\"true\"\r\n            android:layout_centerVertical=\"true\"\r\n            android:src=\"@drawable/jkuat_logo\"\r\n            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.049\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\"\r\n            app:layout_constraintVertical_bias=\"0.06999999\"\r\n            android:contentDescription=\"@string/jkuat_logo\" />\r\n\r\n    </RelativeLayout>\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"15dp\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:text=\"@string/jkuat\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"41sp\"\r\n        app:layout_constraintStart_toEndOf=\"@+id/imageBackground\"\r\n        app:layout_constraintTop_toTopOf=\"@+id/imageBackground\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView3\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"7dp\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:text=\"@string/election_management_system\"\r\n        android:textColor=\"@color/white\"\r\n        android:textSize=\"14sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"@+id/textView\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView4\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:background=\"@drawable/rectangular_background\"\r\n        android:fontFamily=\"@font/montserrat_medium\"\r\n        android:padding=\"15dp\"\r\n        android:text=\"@string/maina_josephat_students_jkuat_ac_ke\"\r\n        android:textColor=\"@color/jkuraGreen\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/imageBackground\" />\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/pass_prompt\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"10dp\"\r\n        android:layout_marginTop=\"15dp\"\r\n        android:padding=\"5dp\"\r\n        android:text=\"@string/enter_your_password\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView4\" />\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/et_password\"\r\n        android:layout_width=\"0dp\"\r\n        style=\"@style/TextInputLayoutStyle\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:layout_marginEnd=\"20dp\"\r\n        android:hint=\"@string/password\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/pass_prompt\">\r\n\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:inputType=\"textCapSentences\" />\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n\r\n    <com.google.android.material.button.MaterialButton\r\n        android:id=\"@+id/materialButton\"\r\n        style=\"@style/Widget.MaterialComponents.Button.OutlinedButton\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"40dp\"\r\n        android:layout_marginEnd=\"40dp\"\r\n        android:fontFamily=\"@font/montserrat_black\"\r\n        android:padding=\"15dp\"\r\n        android:text=\"@string/proceed\"\r\n        android:textColor=\"@color/white\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.92\"\r\n        app:strokeColor=\"@color/white\"\r\n        app:strokeWidth=\"2dp\" />\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_login.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/res/layout/activity_login.xml	(date 1619539512884)
+@@ -112,7 +112,7 @@
+ 
+ 
+     <com.google.android.material.button.MaterialButton
+-        android:id="@+id/materialButton"
++        android:id="@+id/proceedLogin"
+         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+Index: app/src/main/res/layout/active_session_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_marginBottom=\"10dp\"\r\n    android:layout_height=\"wrap_content\">\r\n\r\n    <RelativeLayout\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"horizontal\"\r\n        android:layout_marginStart=\"30dp\"\r\n        android:layout_marginEnd=\"30dp\"\r\n        android:background=\"@drawable/rectangular_background\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\">\r\n\r\n        <TextView\r\n            android:id=\"@+id/sessionName\"\r\n            android:layout_width=\"250dp\"\r\n            android:padding=\"20dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:fontFamily=\"@font/montserrat_medium\"\r\n            android:text=\"@string/session\"\r\n            android:textColor=\"@color/jkuraGreen\" />\r\n\r\n        <com.google.android.material.button.MaterialButton\r\n            android:id=\"@+id/materialButton\"\r\n            style=\"@style/Widget.MaterialComponents.Button.OutlinedButton\"\r\n            android:layout_width=\"70dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_alignParentEnd=\"true\"\r\n            android:layout_toEndOf=\"@+id/sessionName\"\r\n            android:layout_centerVertical=\"true\"\r\n            android:fontFamily=\"@font/montserrat_medium\"\r\n            android:padding=\"10dp\"\r\n            android:textSize=\"12sp\"\r\n            android:text=\"@string/action\"\r\n            android:layout_marginEnd=\"10dp\"\r\n            android:textColor=\"@color/jkuraRed\"\r\n            app:strokeColor=\"@color/jkuraRed\"\r\n            app:strokeWidth=\"2dp\" />\r\n    </RelativeLayout>\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/active_session_item.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/res/layout/active_session_item.xml	(date 1619539512876)
+@@ -27,7 +27,7 @@
+             android:textColor="@color/jkuraGreen" />
+ 
+         <com.google.android.material.button.MaterialButton
+-            android:id="@+id/materialButton"
++            android:id="@+id/sessionActionBtn"
+             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+             android:layout_width="70dp"
+             android:layout_height="wrap_content"
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"PLATFORM\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"JDK\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n        <option name=\"useQualifiedModuleNames\" value=\"true\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ .idea/gradle.xml	(date 1619539739456)
+@@ -7,7 +7,7 @@
+         <option name="testRunner" value="PLATFORM" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleJvm" value="JDK" />
++        <option name="gradleJvm" value="1.8" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+Index: app/src/main/java/com/android/jkura/ProvidePasswordActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.android.jkura;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.os.Bundle;\r\n\r\npublic class ProvidePasswordActivity extends AppCompatActivity {\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_provide_password);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/android/jkura/ProvidePasswordActivity.java	(revision 65f7fa5724fcc20829385f6b1f92d3f8df46e766)
++++ app/src/main/java/com/android/jkura/ProvidePasswordActivity.java	(date 1619539512851)
+@@ -1,8 +1,12 @@
+ package com.android.jkura;
+ 
+-import androidx.appcompat.app.AppCompatActivity;
+-
++import android.content.Intent;
+ import android.os.Bundle;
++import android.view.View;
++
++import com.google.android.material.button.MaterialButton;
++
++import androidx.appcompat.app.AppCompatActivity;
+ 
+ public class ProvidePasswordActivity extends AppCompatActivity {
+ 
+@@ -10,5 +14,13 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_provide_password);
++
++        MaterialButton proceedLogin = findViewById(R.id.submitFirstPasswordBtn);
++        proceedLogin.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                startActivity(new Intent(ProvidePasswordActivity.this,HomeActivity.class));
++            }
++        });
+     }
+ }
+\ No newline at end of file
