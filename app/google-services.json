@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "208604181433",
+    "firebase_url": "https://j-kura-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "j-kura",
+    "storage_bucket": "j-kura.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208604181433:android:c77768a6f495538b5f7c68",
+        "android_client_info": {
+          "package_name": "com.android.jkura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208604181433-q6ooo37ucdqtbpf02gij2boaajjde2ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2wBm7ZCnAmCSp7U-Qcmo6fX7t58vpFX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208604181433-q6ooo37ucdqtbpf02gij2boaajjde2ln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

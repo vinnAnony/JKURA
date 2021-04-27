@@ -17,6 +17,7 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
 
         aspirantPositionTV = findViewById(R.id.aspirantPosition);
         aspirantPositionTV.setOnClickListener(this);
+
     }
 
     @Override
