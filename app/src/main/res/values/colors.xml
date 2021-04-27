@@ -9,4 +9,9 @@
     <color name="jkuraRed">#DD1511</color>
     <color name="white">#fff</color>
     <color name="grey">#DFDFDF</color>
+
+    <color name="pieYellow">#FF108B</color>
+    <color name="pieBlue">#2965FF</color>
+    <color name="pieOthers">#12FAE6</color>
+
 </resources>
