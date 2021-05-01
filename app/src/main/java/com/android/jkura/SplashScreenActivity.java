@@ -38,11 +38,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                                    Intent mainIntent = new Intent(SplashScreenActivity.this, FirstTimeLoginActivity.class);
                                     SplashScreenActivity.this.startActivity(mainIntent);
                                     SplashScreenActivity.this.finish();
+                                    Toast.makeText(getApplicationContext(), "Firebase hooked up", Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Firebase didn't hock up", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Firebase didn't hook up", Toast.LENGTH_LONG).show();
                                 }
                             }
                         })
@@ -50,7 +51,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Log.d(TAG, "onFailure: "+e.toString());
-                                Toast.makeText(getApplicationContext(), "Firebase didn't hock up", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Firebase didn't hook up", Toast.LENGTH_LONG).show();
                             }
                         });
 

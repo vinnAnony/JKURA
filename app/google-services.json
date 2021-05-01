@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "912642893046",
+    "firebase_url": "https://jkura-5a223-default-rtdb.firebaseio.com",
     "project_id": "jkura-5a223",
     "storage_bucket": "jkura-5a223.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.android.jkura",
             "certificate_hash": "ea17c44ecbf1e9e10ca05f8b306954581c9e9ac5"
+          }
+        },
+        {
+          "client_id": "912642893046-g16i4ffv48t8eftfkkuh90dk8g31t8is.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.jkura",
+            "certificate_hash": "d26c43fd4258b016d2e3b4bfb2d3b04faf5d46f6"
           }
         },
         {
