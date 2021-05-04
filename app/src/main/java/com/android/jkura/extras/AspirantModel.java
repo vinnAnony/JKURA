@@ -8,6 +8,8 @@ public class AspirantModel {
     private String aspirantPosition;
     private String aspirantSchool;
     private String aspirantDepartment;
+    private String aspirantRegNo;
+    private String aspirantEmail;
     private String key;
     private int position;
 
@@ -18,12 +20,30 @@ public class AspirantModel {
         this.position = position;
     }
 
-    public AspirantModel(String aspirantName, String aspirantImageURL, String aspirantPosition, String aspirantSchool, String aspirantDepartment) {
+    public AspirantModel(String aspirantName, String aspirantImageURL, String aspirantPosition, String aspirantSchool, String aspirantDepartment, String aspirantEmail, String aspirantRegNo) {
         this.aspirantName = aspirantName;
         this.aspirantImageURL = aspirantImageURL;
         this.aspirantPosition = aspirantPosition;
         this.aspirantSchool = aspirantSchool;
         this.aspirantDepartment = aspirantDepartment;
+        this.aspirantEmail = aspirantEmail;
+        this.aspirantRegNo = aspirantRegNo;
+    }
+
+    public String getAspirantRegNo() {
+        return aspirantRegNo;
+    }
+
+    public void setAspirantRegNo(String aspirantRegNo) {
+        this.aspirantRegNo = aspirantRegNo;
+    }
+
+    public String getAspirantEmail() {
+        return aspirantEmail;
+    }
+
+    public void setAspirantEmail(String aspirantEmail) {
+        this.aspirantEmail = aspirantEmail;
     }
 
     public String getAspirantName() {
