@@ -171,7 +171,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="visible">
+        android:visibility="gone">
         <ProgressBar
             android:id="@+id/aspirantSelectPB"
             android:layout_width="40dp"
@@ -180,7 +180,7 @@
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/progress_color"
             android:progress="0"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

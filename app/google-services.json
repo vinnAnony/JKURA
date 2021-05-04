@@ -1,34 +1,50 @@
 {
   "project_info": {
-    "project_number": "208604181433",
-    "firebase_url": "https://j-kura-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "j-kura",
-    "storage_bucket": "j-kura.appspot.com"
+    "project_number": "912642893046",
+    "firebase_url": "https://jkura-5a223-default-rtdb.firebaseio.com",
+    "project_id": "jkura-5a223",
+    "storage_bucket": "jkura-5a223.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:208604181433:android:c77768a6f495538b5f7c68",
+        "mobilesdk_app_id": "1:912642893046:android:ea1fe80368a91958cd78d7",
         "android_client_info": {
           "package_name": "com.android.jkura"
         }
       },
       "oauth_client": [
         {
-          "client_id": "208604181433-q6ooo37ucdqtbpf02gij2boaajjde2ln.apps.googleusercontent.com",
+          "client_id": "912642893046-5d7k6k2tlu1aiho7l19btdabitiqc7ud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.jkura",
+            "certificate_hash": "ea17c44ecbf1e9e10ca05f8b306954581c9e9ac5"
+          }
+        },
+        {
+          "client_id": "912642893046-g16i4ffv48t8eftfkkuh90dk8g31t8is.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.jkura",
+            "certificate_hash": "d26c43fd4258b016d2e3b4bfb2d3b04faf5d46f6"
+          }
+        },
+        {
+          "client_id": "912642893046-dfkdsck6a1nqto8df9spspvv6tl014sa.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD2wBm7ZCnAmCSp7U-Qcmo6fX7t58vpFX4"
+          "current_key": "AIzaSyDm9tUZ55BW-AUViTGMGupyyj8RsxspyqE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "208604181433-q6ooo37ucdqtbpf02gij2boaajjde2ln.apps.googleusercontent.com",
+              "client_id": "912642893046-dfkdsck6a1nqto8df9spspvv6tl014sa.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

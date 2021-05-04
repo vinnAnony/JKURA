@@ -4,10 +4,10 @@ import com.google.firebase.database.Exclude;
 
 public class AspirantModel {
     private String aspirantName;
+    private String aspirantEmail;
     private String aspirantImageURL;
-    private String aspirantPosition;
-    private String aspirantSchool;
-    private String aspirantDepartment;
+    private String aspirantCourse;
+    private String aspirantRegNo;
     private String key;
     private int position;
 
@@ -18,12 +18,12 @@ public class AspirantModel {
         this.position = position;
     }
 
-    public AspirantModel(String aspirantName, String aspirantImageURL, String aspirantPosition, String aspirantSchool, String aspirantDepartment) {
+    public AspirantModel(String aspirantName, String aspirantEmail, String aspirantImageURL, String aspirantCourse, String aspirantRegNo) {
         this.aspirantName = aspirantName;
+        this.aspirantEmail = aspirantEmail;
         this.aspirantImageURL = aspirantImageURL;
-        this.aspirantPosition = aspirantPosition;
-        this.aspirantSchool = aspirantSchool;
-        this.aspirantDepartment = aspirantDepartment;
+        this.aspirantCourse = aspirantCourse;
+        this.aspirantRegNo = aspirantRegNo;
     }
 
     public String getAspirantName() {
@@ -34,6 +34,14 @@ public class AspirantModel {
         this.aspirantName = aspirantName;
     }
 
+    public String getAspirantEmail() {
+        return aspirantEmail;
+    }
+
+    public void setAspirantEmail(String aspirantEmail) {
+        this.aspirantEmail = aspirantEmail;
+    }
+
     public String getAspirantImageURL() {
         return aspirantImageURL;
     }
@@ -42,28 +50,20 @@ public class AspirantModel {
         this.aspirantImageURL = aspirantImageURL;
     }
 
-    public String getAspirantPosition() {
-        return aspirantPosition;
+    public String getAspirantCourse() {
+        return aspirantCourse;
     }
 
-    public void setAspirantPosition(String aspirantPosition) {
-        this.aspirantPosition = aspirantPosition;
+    public void setAspirantCourse(String aspirantCourse) {
+        this.aspirantCourse = aspirantCourse;
     }
 
-    public String getAspirantSchool() {
-        return aspirantSchool;
+    public String getAspirantRegNo() {
+        return aspirantRegNo;
     }
 
-    public void setAspirantSchool(String aspirantSchool) {
-        this.aspirantSchool = aspirantSchool;
-    }
-
-    public String getAspirantDepartment() {
-        return aspirantDepartment;
-    }
-
-    public void setAspirantDepartment(String aspirantDepartment) {
-        this.aspirantDepartment = aspirantDepartment;
+    public void setAspirantRegNo(String aspirantRegNo) {
+        this.aspirantRegNo = aspirantRegNo;
     }
 
     @Exclude
