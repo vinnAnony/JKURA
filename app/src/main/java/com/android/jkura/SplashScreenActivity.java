@@ -90,8 +90,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         AspirantModel dummyAspirant = new AspirantModel(
             dummyStudent.getStudentName(),
-                "imageUrl",
-                "School Rep",
                 dummyStudent.getStudentSchool(),
                 dummyStudent.getStudentDepartment(),
                 dummyStudent.getStudentEmail(),

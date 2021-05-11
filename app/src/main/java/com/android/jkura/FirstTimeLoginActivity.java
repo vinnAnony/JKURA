@@ -6,10 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 
 public class FirstTimeLoginActivity extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
@@ -42,7 +44,6 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 signin();
-                //sendEmailVerification();
             }
         });
         // Configure Google Sign In
@@ -55,15 +56,6 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
-        MaterialButton submitOTP = findViewById(R.id.submitOTPBtn);
-        submitOTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(FirstTimeLoginActivity.this  , ProvidePasswordActivity.class));
-            }
-        });
-
     }
 
     @Override
@@ -89,6 +81,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 Log.d(TAG, "onActivityResult: " + account.getIdToken());
                 firebaseAuthWithGoogle(account.getIdToken());
+                startAct();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
@@ -123,9 +116,11 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signin]
+    private void startAct(){
+        startActivity(new Intent(FirstTimeLoginActivity.this , ProvidePinActivity.class));
 
+    }
     private void updateUI(FirebaseUser user) {
     }
 }
-        // [END send_email_verification]
+

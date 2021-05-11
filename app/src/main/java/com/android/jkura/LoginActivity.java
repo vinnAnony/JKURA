@@ -47,11 +47,9 @@ public class LoginActivity extends AppCompatActivity {
                     mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) studentModel);
                     startActivity(mainIntent);
                     LoginActivity.this.finish();
-
                 } else {
                     editTextPassword.setError("Please enter the correct password!");
                 }
-
             }
         });
     }
