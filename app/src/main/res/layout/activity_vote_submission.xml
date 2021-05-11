@@ -156,4 +156,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.977" />
 
+    <RelativeLayout
+        android:id="@+id/voteSubmitPBRL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/progressbar_bg"
+        android:elevation="8dp"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/voteSubmitPB"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_color"
+            android:progress="0"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

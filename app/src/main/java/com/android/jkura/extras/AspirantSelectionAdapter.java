@@ -22,12 +22,14 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class AspirantSelectionAdapter extends RecyclerView.Adapter<AspirantSelectionAdapter.RecyclerViewHolder> {
     private Context mContext;
     private List<AspirantModel> aspirants;
-    private String aspirantPosition;
+    private String aspirantPosition,aspirantDepartment,aspirantSchool;
 
-    public AspirantSelectionAdapter(Context mContext, List<AspirantModel> uploads, String aspirantPosition) {
+    public AspirantSelectionAdapter(Context mContext, List<AspirantModel> aspirants, String aspirantPosition, String aspirantDepartment, String aspirantSchool) {
         this.mContext = mContext;
-        this.aspirants = uploads;
+        this.aspirants = aspirants;
         this.aspirantPosition = aspirantPosition;
+        this.aspirantDepartment = aspirantDepartment;
+        this.aspirantSchool = aspirantSchool;
     }
 
     @NonNull
@@ -44,7 +46,7 @@ public class AspirantSelectionAdapter extends RecyclerView.Adapter<AspirantSelec
         holder.aspirantCourse.setText(currentAspirant.getAspirantCourse());
         Picasso.with(mContext)
                 .load(currentAspirant.getAspirantImageURL())
-                //.placeholder(R.drawable.placeholder)
+                .placeholder(R.drawable.placeholder)
                 .fit()
                 .centerCrop()
                 .transform(new CropCircleTransformation())
@@ -53,8 +55,8 @@ public class AspirantSelectionAdapter extends RecyclerView.Adapter<AspirantSelec
         holder.aspirantCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] aspData = {currentAspirant.getAspirantName(),currentAspirant.getAspirantCourse(),
-                        currentAspirant.getAspirantImageURL(),currentAspirant.getAspirantRegNo(),aspirantPosition};
+                String[] aspData = {currentAspirant.getAspirantName(),currentAspirant.getAspirantCourse(), currentAspirant.getAspirantImageURL(),
+                        currentAspirant.getAspirantRegNo(),aspirantPosition,aspirantDepartment,aspirantSchool};
                 openDetailActivity(aspData);
             }
         });
@@ -88,6 +90,8 @@ public class AspirantSelectionAdapter extends RecyclerView.Adapter<AspirantSelec
         intent.putExtra("IMAGE_KEY",data[2]);
         intent.putExtra("REG_NO_KEY",data[3]);
         intent.putExtra("POSITION_KEY",data[4]);
+        intent.putExtra("DEPARTMENT_KEY",data[5]);
+        intent.putExtra("SCHOOL_KEY",data[6]);
         mContext.startActivity(intent);
     }
 

@@ -31,7 +31,7 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
     TextView aspirantPositionTV;
     private RecyclerView mRecyclerView;
     private AspirantSelectionAdapter mAdapter;
-    private ProgressBar mProgressBar;
+    public ProgressBar mProgressBar;
     private RelativeLayout mProgressBarRL;
     private FirebaseStorage mStorage;
     private DatabaseReference mDatabaseRef,mAspirantsRef;
@@ -57,12 +57,16 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
         showLoader();
 
         mAspirants = new ArrayList<>();
-        mAdapter = new AspirantSelectionAdapter (AspirantSelectionActivity.this, mAspirants, VotingPosition);
+        mAdapter = new AspirantSelectionAdapter (AspirantSelectionActivity.this, mAspirants, VotingPosition,VotingDepartment,VotingSchool);
         mRecyclerView.setAdapter(mAdapter);
 
         mStorage = FirebaseStorage.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mAspirantsRef = FirebaseDatabase.getInstance().getReference("Aspirants/"+VotingSchool+"/"+VotingDepartment+"/"+VotingPosition);
+        if (VotingPosition.equals("Delegate"))
+            mAspirantsRef = FirebaseDatabase.getInstance().getReference("Aspirants/"+VotingSchool+"/"+VotingDepartment+"/"+VotingPosition);
+        else if (VotingPosition.equals("School Representative"))
+            mAspirantsRef = FirebaseDatabase.getInstance().getReference("Aspirants/"+VotingSchool+"/"+VotingPosition);
+
         //final Query dataQuery = mCountriesRef.orderByChild("aspirantPosition").equalTo(VotingPosition);
         mDBListener = mAspirantsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -97,13 +101,13 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
             startActivity(new Intent(this,VoteSubmissionActivity.class));
         }
     }
-    private void showLoader(){
+    public void showLoader(){
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressBarRL.setVisibility(View.VISIBLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
-    private void hideLoader(){
+    public void hideLoader(){
         mProgressBar.setVisibility(View.GONE);
         mProgressBarRL.setVisibility(View.GONE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
