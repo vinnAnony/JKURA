@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".FirstTimeLoginActivity" />
-        <activity android:name=".ProvidePinActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".VoteSubmissionActivity" />

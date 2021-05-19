@@ -3,6 +3,7 @@ package com.android.jkura;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 
 import com.android.jkura.extras.SessionManager;
@@ -19,6 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
     SessionManager sessionManager;
@@ -26,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout editTextPassword;
 
     public static final String KEY_STUDENT = "student";
+    private final String TAG = "Login Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String userPassword = Objects.requireNonNull(editTextPassword.getEditText()).getText().toString().trim();
+
+                Log.d(TAG, "onClick: Database " + studentModel.getPassword());
+                Log.d(TAG, "onClick: Entered" + userPassword);
                 editTextPassword.setError(null);
-                String userPassword = editTextPassword.getEditText().getText().toString().trim();
                 if(userPassword.equals(studentModel.getPassword())){
                     Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) studentModel);
