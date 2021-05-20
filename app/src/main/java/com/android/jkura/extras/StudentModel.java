@@ -11,20 +11,24 @@ public class StudentModel implements Parcelable {
     private String studentEmail;
     private String studentSchool;
     private String studentDepartment;
+    private int dlgtVoted;
+    private int schRepVoted;
 
 
     public StudentModel(){
 
     }
 
-    public StudentModel(String course, String password, String name, String reg_no, String email, String school, String department) {
-        this.studentCourse = course;
+    public StudentModel(String studentCourse, String password, String studentName, String studentRegNo, String studentEmail, String studentSchool, String studentDepartment, int dlgtVoted, int schRepVoted) {
+        this.studentCourse = studentCourse;
         this.password = password;
-        this.studentName = name;
-        this.studentRegNo = reg_no;
-        this.studentEmail = email;
-        this.studentSchool = school;
-        this.studentDepartment = department;
+        this.studentName = studentName;
+        this.studentRegNo = studentRegNo;
+        this.studentEmail = studentEmail;
+        this.studentSchool = studentSchool;
+        this.studentDepartment = studentDepartment;
+        this.dlgtVoted = dlgtVoted;
+        this.schRepVoted = schRepVoted;
     }
 
     protected StudentModel(Parcel in) {
@@ -35,6 +39,8 @@ public class StudentModel implements Parcelable {
         studentEmail = in.readString();
         studentSchool = in.readString();
         studentDepartment = in.readString();
+        dlgtVoted = in.readInt();
+        schRepVoted = in.readInt();
     }
 
     public static final Creator<StudentModel> CREATOR = new Creator<StudentModel>() {
@@ -105,6 +111,21 @@ public class StudentModel implements Parcelable {
         this.studentDepartment = studentDepartment;
     }
 
+    public int getDlgtVoted() {
+        return dlgtVoted;
+    }
+
+    public void setDlgtVoted(int dlgtVoted) {
+        this.dlgtVoted = dlgtVoted;
+    }
+
+    public int getSchRepVoted() {
+        return schRepVoted;
+    }
+
+    public void setSchRepVoted(int schRepVoted) {
+        this.schRepVoted = schRepVoted;
+    }
 
     @Override
     public int describeContents() {
@@ -120,5 +141,7 @@ public class StudentModel implements Parcelable {
         dest.writeString(studentEmail);
         dest.writeString(studentSchool);
         dest.writeString(studentDepartment);
+        dest.writeInt(dlgtVoted);
+        dest.writeInt(schRepVoted);
     }
 }

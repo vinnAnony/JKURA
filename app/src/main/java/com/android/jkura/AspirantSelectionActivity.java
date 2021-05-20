@@ -1,6 +1,7 @@
 package com.android.jkura;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +13,14 @@ import android.widget.Toast;
 
 import com.android.jkura.extras.AspirantModel;
 import com.android.jkura.extras.AspirantSelectionAdapter;
+import com.android.jkura.extras.SessionManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -38,14 +43,19 @@ public class AspirantSelectionActivity extends AppCompatActivity {
     private ValueEventListener mDBListener;
     private List<AspirantModel> mAspirants;
 
-    private static final String VotingPosition = "Delegate";
+    private static final String VotingPosition = "School Representative";
     private static final String VotingSchool = "School of Mathematical Sciences";
     private static final String VotingDepartment = "Pure and Applied Mathematics";
+
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aspirant_selection);
+
+        sessionManager = new SessionManager(this);
+        getRegNo();
 
         aspirantDepartmentTV = findViewById(R.id.aspirantDepartment);
         aspirantSchoolTV = findViewById(R.id.aspirantSchool);
@@ -74,7 +84,7 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         else if (VotingPosition.equals("School Representative"))
             mAspirantsRef = FirebaseDatabase.getInstance().getReference("Aspirants/"+VotingSchool+"/"+VotingPosition);
 
-        //final Query dataQuery = mCountriesRef.orderByChild("aspirantPosition").equalTo(VotingPosition);
+
         mDBListener = mAspirantsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -98,6 +108,48 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         });
 
     }
+
+    private String getVotersInfo(){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            String voterName = acct.getDisplayName();
+            String voterGivenName = acct.getGivenName();
+            String voterFamilyName = acct.getFamilyName();
+            String voterEmail = acct.getEmail();
+            String voterId = acct.getId();
+            Uri voterPhoto = acct.getPhotoUrl();
+            return voterEmail;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private void getRegNo(){
+        final String currentVoterEmail = getVotersInfo();
+        DatabaseReference mStudentRef = FirebaseDatabase.getInstance().getReference("Students");
+
+        Query regNoQuery = mStudentRef.orderByChild("studentEmail").equalTo(currentVoterEmail);
+        regNoQuery.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String studentRegNo;
+                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                            studentRegNo = postSnapshot.child("studentRegNo").getValue(String.class);
+                            sessionManager.setRegNo(studentRegNo);
+
+                            Log.e("PostSnapshot.", "Value is: " + studentRegNo);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("TAG", "Failed to read value.", databaseError.toException());
+                    }
+                });
+    }
+
 
     public void showLoader(){
         mProgressBar.setVisibility(View.VISIBLE);

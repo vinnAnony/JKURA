@@ -156,10 +156,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 "Bsc. Mathematics and Computer Science",
                 "Jos1234@",
                 "Josephat Ndungu Maina",
-                "SCM 211-0214-2017",
+                "SCM211-0214-2017",
                 "maina.josephat@students.jkuat.ac.ke",
                 "School of Mathematical Sciences",
-                "Pure and Applied Mathematics"
+                "Pure and Applied Mathematics",
+                0,
+                0
         );
 
         AspirantModel dummyAspirant = new AspirantModel(

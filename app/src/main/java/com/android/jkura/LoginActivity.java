@@ -1,13 +1,17 @@
 package com.android.jkura;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.jkura.extras.SessionManager;
 import com.android.jkura.extras.StudentModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -27,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     SessionManager sessionManager;
     StudentModel studentModel;
     TextInputLayout editTextPassword;
+    TextView currentUserEmail;
 
     public static final String KEY_STUDENT = "student";
     private final String TAG = "Login Activity";
@@ -38,6 +43,13 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         editTextPassword = findViewById(R.id.et_password);
         studentModel = getIntent().getParcelableExtra(KEY_STUDENT);
+
+        currentUserEmail = findViewById(R.id.loggedEmail);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            String voterEmail = acct.getEmail();
+            currentUserEmail.setText(voterEmail);
+        }
 
         MaterialButton proceedLogin = findViewById(R.id.proceedLogin);
         proceedLogin.setOnClickListener(new View.OnClickListener() {

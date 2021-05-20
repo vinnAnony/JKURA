@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.jkura.extras.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,13 +57,14 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
     private ValueEventListener mDBListener;
 
     private static String CurrentStudentRegNo;
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_submission);
 
-        getRegNo();
-        Toast.makeText(this, CurrentStudentRegNo, Toast.LENGTH_SHORT).show();
+        sessionManager = new SessionManager(this);
+        CurrentStudentRegNo = sessionManager.getRegNo();
 
         submitVote = findViewById(R.id.submitVoteBtn);
         submitVote.setOnClickListener(this);
@@ -151,7 +153,7 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
                         -STEP 3 > Insert voter has already voted in Votes & Students
                         -STEP 4 > Increment votes
                   */
-                verifyVotedStatus();
+                verifyPassword();
             }
         });
 
@@ -167,7 +169,7 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
                     fbPass[0] = dataSnapshot.child("password").getValue(String.class);
                     Log.e("FB Pass", "Value is: " + fbPass[0]);
                     if (pass.equals(fbPass[0])) {
-                        submitVote();
+                        verifyVotedStatus();
                     }
                     else {
                         popPassTIL.setError("Invalid Password!");
@@ -204,8 +206,8 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
                 mVoterRef.child(finalVoteType).setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
                         Toast.makeText(VoteSubmissionActivity.this, "Thanks for voting!", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(VoteSubmissionActivity.this,HomeActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -238,10 +240,12 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
                 int voteStatus = dataSnapshot.child(finalVoteType).getValue(Integer.class);
                 Log.e("Vote Status", "Value is: " + voteStatus);
                 if (voteStatus == 0) {
-                    verifyPassword();
+                    submitVote();
                 }
                 else if(voteStatus == 1){
+                    popPassTIL.setError("Already voted!");
                     Toast.makeText(VoteSubmissionActivity.this, "Already voted!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(VoteSubmissionActivity.this,HomeActivity.class));
                 }
             }
 
@@ -252,46 +256,6 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
         });
     }
 
-    private String getVotersInfo(){
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if (acct != null) {
-            String voterName = acct.getDisplayName();
-            String voterGivenName = acct.getGivenName();
-            String voterFamilyName = acct.getFamilyName();
-            String voterEmail = acct.getEmail();
-            String voterId = acct.getId();
-            Uri voterPhoto = acct.getPhotoUrl();
-            return voterEmail;
-        }
-        else {
-         return null;
-        }
-    }
-
-    private void getRegNo(){
-        final String currentVoterEmail = getVotersInfo();
-        DatabaseReference mStudentRef = FirebaseDatabase.getInstance().getReference("Students");
-
-        Query regNoQuery = mStudentRef.orderByChild("studentEmail").equalTo(currentVoterEmail);
-        regNoQuery.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String studentRegNo;
-                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                            studentRegNo = postSnapshot.child("studentRegNo").getValue(String.class);
-                            CurrentStudentRegNo = studentRegNo;
-
-                            Log.e("PostSnapshot.", "Value is: " + studentRegNo);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e("TAG", "Failed to read value.", databaseError.toException());
-                    }
-                });
-    }
 
     @Override
     public void onClick(View v) {
