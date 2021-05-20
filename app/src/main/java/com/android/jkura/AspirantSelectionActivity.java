@@ -27,8 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AspirantSelectionActivity extends AppCompatActivity implements View.OnClickListener {
-    TextView aspirantPositionTV;
+public class AspirantSelectionActivity extends AppCompatActivity {
+    TextView aspirantPositionTV,aspirantSchoolTV,aspirantDepartmentTV;
     private RecyclerView mRecyclerView;
     private AspirantSelectionAdapter mAdapter;
     public ProgressBar mProgressBar;
@@ -38,7 +38,7 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
     private ValueEventListener mDBListener;
     private List<AspirantModel> mAspirants;
 
-    private static final String VotingPosition = "School Representative";
+    private static final String VotingPosition = "Delegate";
     private static final String VotingSchool = "School of Mathematical Sciences";
     private static final String VotingDepartment = "Pure and Applied Mathematics";
 
@@ -46,6 +46,13 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aspirant_selection);
+
+        aspirantDepartmentTV = findViewById(R.id.aspirantDepartment);
+        aspirantSchoolTV = findViewById(R.id.aspirantSchool);
+        aspirantPositionTV = findViewById(R.id.aspirantPosition);
+        aspirantPositionTV.setText(VotingPosition);
+        aspirantDepartmentTV.setText(VotingDepartment);
+        aspirantSchoolTV.setText(VotingSchool);
 
         mRecyclerView = findViewById(R.id.aspirantsRV);
         mRecyclerView.setHasFixedSize(true);
@@ -84,23 +91,14 @@ public class AspirantSelectionActivity extends AppCompatActivity implements View
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(AspirantSelectionActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AspirantSelectionActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
                 hideLoader();
             }
         });
 
-        aspirantPositionTV = findViewById(R.id.aspirantPosition);
-        aspirantPositionTV.setOnClickListener(this);
-
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.equals(aspirantPositionTV)){
-            startActivity(new Intent(this,VoteSubmissionActivity.class));
-        }
-    }
     public void showLoader(){
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressBarRL.setVisibility(View.VISIBLE);

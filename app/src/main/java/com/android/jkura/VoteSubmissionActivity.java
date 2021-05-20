@@ -1,21 +1,37 @@
 package com.android.jkura;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -25,6 +41,8 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
     ImageView popAspImage;
     TextView popAspName,popAspPosition;
     MaterialButton popCancelBtn,popAcceptBtn;
+    EditText popPassword;
+    TextInputLayout popPassTIL;
 
     String aspName,aspCourse,aspImageURL,aspRegNo,aspPosition,aspDepartment,aspSchool;
     TextView aspirantPosition,aspirantName,aspirantCourse;
@@ -33,10 +51,18 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
     MaterialButton submitVote;
     ProgressBar mProgressBar;
     RelativeLayout mProgressBarRL;
+
+    private DatabaseReference mVotesRef,mVoterRef;
+    private ValueEventListener mDBListener;
+
+    private static String CurrentStudentRegNo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vote_submission);
+
+        getRegNo();
+        Toast.makeText(this, CurrentStudentRegNo, Toast.LENGTH_SHORT).show();
 
         submitVote = findViewById(R.id.submitVoteBtn);
         submitVote.setOnClickListener(this);
@@ -56,6 +82,16 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
         aspPosition=i.getExtras().getString("POSITION_KEY");
         aspDepartment=i.getExtras().getString("DEPARTMENT_KEY");
         aspSchool=i.getExtras().getString("SCHOOL_KEY");
+
+        mVoterRef = FirebaseDatabase.getInstance().getReference("Students/"+CurrentStudentRegNo);
+
+        if (aspPosition.equals("Delegate")){
+            mVotesRef = FirebaseDatabase.getInstance().getReference("Votes/"+aspSchool+"/"+aspDepartment+"/"+aspPosition+"/"+aspRegNo);
+        }else if (aspPosition.equals("School Representative")){
+            mVotesRef = FirebaseDatabase.getInstance().getReference("Votes/"+aspSchool+"/"+aspPosition+"/"+aspRegNo);
+        }
+
+        //insert here
 
         aspirantPosition.setText(aspPosition);
         aspirantName.setText(aspName);
@@ -81,6 +117,8 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
         popAspImage = dialogView.findViewById(R.id.popAspirantImage);
         popAspName = dialogView.findViewById(R.id.popAspirantName);
         popAspPosition = dialogView.findViewById(R.id.popAspirantPosition);
+        popPassword = dialogView.findViewById(R.id.popPasswordET);
+        popPassTIL = dialogView.findViewById(R.id.passwordTIL);
         popCancelBtn = dialogView.findViewById(R.id.popCancelBtn);
         popAcceptBtn = dialogView.findViewById(R.id.popOkBtn);
 
@@ -108,10 +146,153 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
         popAcceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Submit vote
+                /*:TODO -STEP 1 > Verify vote status
+                        -STEP 2 > Verify password
+                        -STEP 3 > Insert voter has already voted in Votes & Students
+                        -STEP 4 > Increment votes
+                  */
+                verifyVotedStatus();
+            }
+        });
+
+    }
+
+    private void verifyPassword(){
+        final String pass = popPassword.getText().toString();
+        final String[] fbPass = new String[1];
+        if (pass!=null && !pass.equals("")){
+            mVoterRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    fbPass[0] = dataSnapshot.child("password").getValue(String.class);
+                    Log.e("FB Pass", "Value is: " + fbPass[0]);
+                    if (pass.equals(fbPass[0])) {
+                        submitVote();
+                    }
+                    else {
+                        popPassTIL.setError("Invalid Password!");
+                        Toast.makeText(VoteSubmissionActivity.this, "Invalid Password!", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Log.e("TAG", "Failed to read value.", error.toException());
+                }
+            });
+
+        }
+        else {
+            Toast.makeText(this, "Enter password!", Toast.LENGTH_LONG).show();
+            popPassTIL.setError("Enter password");
+        }
+    }
+
+    private void submitVote(){
+        String key = mVotesRef.push().getKey();
+        String voteType = "";
+
+        if (aspPosition.equals("Delegate"))
+            voteType = "dlgtVoted";
+        else if (aspPosition.equals("School Representative"))
+            voteType = "schRepVoted";
+
+        final String finalVoteType = voteType;
+        mVotesRef.child(key).setValue(CurrentStudentRegNo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                mVoterRef.child(finalVoteType).setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(VoteSubmissionActivity.this, "Thanks for voting!", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(VoteSubmissionActivity.this, "An error occurred.Please try again!", Toast.LENGTH_LONG).show();
+                        Log.d("Submit Vote:-", e.getLocalizedMessage());
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(VoteSubmissionActivity.this, "An error occurred.Please try again!", Toast.LENGTH_LONG).show();
+                Log.d("Submit Vote:-", e.getLocalizedMessage());
             }
         });
     }
+
+    private void verifyVotedStatus(){
+        String voteType = "";
+        if (aspPosition.equals("Delegate"))
+            voteType = "dlgtVoted";
+        else if (aspPosition.equals("School Representative"))
+            voteType = "schRepVoted";
+
+        final String finalVoteType = voteType;
+        mVoterRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int voteStatus = dataSnapshot.child(finalVoteType).getValue(Integer.class);
+                Log.e("Vote Status", "Value is: " + voteStatus);
+                if (voteStatus == 0) {
+                    verifyPassword();
+                }
+                else if(voteStatus == 1){
+                    Toast.makeText(VoteSubmissionActivity.this, "Already voted!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("TAG", "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    private String getVotersInfo(){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            String voterName = acct.getDisplayName();
+            String voterGivenName = acct.getGivenName();
+            String voterFamilyName = acct.getFamilyName();
+            String voterEmail = acct.getEmail();
+            String voterId = acct.getId();
+            Uri voterPhoto = acct.getPhotoUrl();
+            return voterEmail;
+        }
+        else {
+         return null;
+        }
+    }
+
+    private void getRegNo(){
+        final String currentVoterEmail = getVotersInfo();
+        DatabaseReference mStudentRef = FirebaseDatabase.getInstance().getReference("Students");
+
+        Query regNoQuery = mStudentRef.orderByChild("studentEmail").equalTo(currentVoterEmail);
+        regNoQuery.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String studentRegNo;
+                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                            studentRegNo = postSnapshot.child("studentRegNo").getValue(String.class);
+                            CurrentStudentRegNo = studentRegNo;
+
+                            Log.e("PostSnapshot.", "Value is: " + studentRegNo);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("TAG", "Failed to read value.", databaseError.toException());
+                    }
+                });
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(submitVote)){
