@@ -19,4 +19,6 @@
     <string name="submit_vote">SUBMIT VOTE</string>
     <string name="school_representative">School Representative</string>
     <string name="otp">OTP</string>
+    <string name="vote">Vote</string>
+    <string name="provide_pass">Please provide a password for your account</string>
 </resources>

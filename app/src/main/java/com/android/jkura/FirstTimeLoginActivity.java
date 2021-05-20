@@ -2,10 +2,15 @@ package com.android.jkura;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.jkura.extras.SessionManager;
+import com.android.jkura.extras.StudentModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -15,81 +20,130 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 public class FirstTimeLoginActivity extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-
-    // declare_auth
     private FirebaseAuth mAuth;
-
     private GoogleSignInClient mGoogleSignInClient;
+
+    private TextInputLayout editTextPassword, editTextConfirmPass;
+    private TextView firstTimeTextView;
+    private MaterialButton submitButton;
+    private ConstraintLayout layout;
+
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_time_login);
 
-        Button emailbtn = findViewById(R.id.EmailBtn);
-        emailbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signin();
-            }
-        });
-        // Configure Google Sign In
+        sessionManager = new SessionManager(this);
+
+        firstTimeTextView = findViewById(R.id.first_time_label);
+        editTextPassword = findViewById(R.id.et_password);
+        editTextConfirmPass = findViewById(R.id.et_password_conf);
+        submitButton = findViewById(R.id.submitPass);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        signIn();
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mAuth.getCurrentUser().getEmail() != null){
+                    String password = editTextPassword.getEditText().getText().toString().trim();
+                    String passwordConfirm = editTextConfirmPass.getEditText().getText().toString().trim();
+
+                    if (password.equals(passwordConfirm)){
+
+                        //emulate fetch details from school server to get email details
+                        final StudentModel student = new StudentModel(
+                                "Bsc. Mathematics and Computer Science",
+                                password,
+                                "John Doe",
+                                "SCM 211-0212-2017",
+                                mAuth.getCurrentUser().getEmail(),
+                                "School of Mathematical Sciences",
+                                "Pure and Applied Mathematics"
+                        );
+
+                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                        DatabaseReference ref = firebaseDatabase.getReference("Students/"+student.getStudentRegNo());
+
+                        ref.setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    sessionManager.setRegNo(student.getStudentRegNo());
+                                    sessionManager.setEmailDetails(student.getStudentEmail());
+                                    Intent mainIntent = new Intent(FirstTimeLoginActivity.this, HomeActivity.class);
+                                    mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) student);
+                                    FirstTimeLoginActivity.this.startActivity(mainIntent);
+                                    FirstTimeLoginActivity.this.finish();
+                                } else {
+                                    Snackbar snackbar = Snackbar.make(layout,"There was an error while submitting your password." , Snackbar.LENGTH_INDEFINITE);
+                                    snackbar.setAction("TRY AGAIN", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            signIn();
+                                        }
+                                    });
+                                    snackbar.show();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    signIn();
+                }
+
+            }
+        });
+
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
 
-
-    // START onactivityresult
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                Log.d(TAG, "onActivityResult: " + account.getIdToken());
+                assert account != null;
                 firebaseAuthWithGoogle(account.getIdToken());
-                startAct();
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
             }
         }
     }
 
-    // [START auth_with_google]
+
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -97,30 +151,28 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+
+                            firstTimeTextView.setText(R.string.provide_pass);
+
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
+                            layout = findViewById(R.id.layout1);
+                            Snackbar snackbar = Snackbar.make(layout,"Account creation failed" , Snackbar.LENGTH_INDEFINITE);
+                            snackbar.setAction("TRY AGAIN", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    signIn();
+                                }
+                            });
+                            snackbar.show();
                         }
                     }
                 });
     }
-    // [END auth_with_google]
 
-    // [START signin]
-    private void signin() {
+    private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    private void startAct(){
-        startActivity(new Intent(FirstTimeLoginActivity.this , ProvidePinActivity.class));
 
-    }
-    private void updateUI(FirebaseUser user) {
-    }
 }
 
