@@ -1,6 +1,7 @@
 package com.android.jkura;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.jkura.extras.CheckNet;
 import com.android.jkura.extras.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +38,8 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class VoteSubmissionActivity extends AppCompatActivity implements View.OnClickListener {
@@ -260,7 +265,23 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
         if (v.equals(submitVote)){
-            confirmVotePopUp();
+            if (CheckNet.isConnected(getApplicationContext())) {
+                confirmVotePopUp();
+            }else {
+                ConstraintLayout cLyt = findViewById(R.id.constraintVSA);
+                Snackbar snackbar = Snackbar.make(cLyt,"Oops!Check your internet connection",Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                        overridePendingTransition( 0, 0);
+                        startActivity(getIntent());
+                        overridePendingTransition( 0, 0);
+                    }
+                });
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+            }
         }
     }
 

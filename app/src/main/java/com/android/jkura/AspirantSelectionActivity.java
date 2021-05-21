@@ -1,6 +1,7 @@
 package com.android.jkura;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,11 @@ import android.widget.Toast;
 
 import com.android.jkura.extras.AspirantModel;
 import com.android.jkura.extras.AspirantSelectionAdapter;
+import com.android.jkura.extras.CheckNet;
 import com.android.jkura.extras.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +32,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,7 +59,6 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_aspirant_selection);
 
         sessionManager = new SessionManager(this);
-        getRegNo();
 
         aspirantDepartmentTV = findViewById(R.id.aspirantDepartment);
         aspirantSchoolTV = findViewById(R.id.aspirantSchool);
@@ -84,28 +87,47 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         else if (VotingPosition.equals("School Representative"))
             mAspirantsRef = FirebaseDatabase.getInstance().getReference("Aspirants/"+VotingSchool+"/"+VotingPosition);
 
+        if (CheckNet.isConnected(getApplicationContext())){
+            getRegNo();
 
-        mDBListener = mAspirantsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mAspirants.clear();
+            mDBListener = mAspirantsRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    mAspirants.clear();
 
-                for (DataSnapshot aspirantSnapshot : dataSnapshot.getChildren()) {
-                    AspirantModel upload = aspirantSnapshot.getValue(AspirantModel.class);
-                    upload.setKey(aspirantSnapshot.getKey());
-                    mAspirants.add(upload);
+                    for (DataSnapshot aspirantSnapshot : dataSnapshot.getChildren()) {
+                        AspirantModel upload = aspirantSnapshot.getValue(AspirantModel.class);
+                        upload.setKey(aspirantSnapshot.getKey());
+                        mAspirants.add(upload);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    hideLoader();
                 }
-                mAdapter.notifyDataSetChanged();
-                hideLoader();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //Toast.makeText(AspirantSelectionActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-                hideLoader();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    //Toast.makeText(AspirantSelectionActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    hideLoader();
+                }
+            });
+        }else {
+            hideLoader();
+
+            ConstraintLayout cLyt = findViewById(R.id.contraintASA);
+            Snackbar snackbar = Snackbar.make(cLyt,"Oops!Check your internet connection",Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                    overridePendingTransition( 0, 0);
+                    startActivity(getIntent());
+                    overridePendingTransition( 0, 0);
+                }
+            });
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
+        }
 
     }
 
