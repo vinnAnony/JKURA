@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.jkura.extras.SessionManager;
 import com.android.jkura.extras.StudentModel;
@@ -25,7 +23,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -74,18 +71,18 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (mAuth.getCurrentUser().getEmail() != null){
+                if (mAuth.getCurrentUser().getEmail() != null) {
                     String password = editTextPassword.getEditText().getText().toString().trim();
                     String passwordConfirm = editTextConfirmPass.getEditText().getText().toString().trim();
 
-                    if (password.equals(passwordConfirm)){
+                    if (password.equals(passwordConfirm)) {
 
                         //emulate fetch details from school server to get email details
                         final StudentModel student = new StudentModel(
                                 "Bsc. Mathematics and Computer Science",
                                 password,
                                 "John Doe",
-                                "SCM211-0212-2017",
+                                "SCM211-0252-2017",
                                 mAuth.getCurrentUser().getEmail(),
                                 "School of Mathematical Sciences",
                                 "Pure and Applied Mathematics",
@@ -94,30 +91,41 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                         );
 
                         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                        DatabaseReference ref = firebaseDatabase.getReference("Students/"+student.getStudentRegNo());
+                        final DatabaseReference ref = firebaseDatabase.getReference("Students/" + student.getStudentRegNo());
 
-                        ref.setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        final String replacedMail = replaceDot(mAuth.getCurrentUser().getEmail());
+
+                        DatabaseReference RegRef = firebaseDatabase.getReference("Emails/" + replacedMail);
+                        RegRef.setValue(student.getStudentRegNo()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    sessionManager.setRegNo(student.getStudentRegNo());
-                                    sessionManager.setEmailDetails(student.getStudentEmail());
-                                    Intent mainIntent = new Intent(FirstTimeLoginActivity.this, HomeActivity.class);
-                                    mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) student);
-                                    FirstTimeLoginActivity.this.startActivity(mainIntent);
-                                    FirstTimeLoginActivity.this.finish();
-                                } else {
-                                    Snackbar snackbar = Snackbar.make(layout,"There was an error while submitting your password." , Snackbar.LENGTH_INDEFINITE);
-                                    snackbar.setAction("TRY AGAIN", new View.OnClickListener() {
+                                if (task.isSuccessful()) {
+                                    ref.setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
-                                        public void onClick(View v) {
-                                            signIn();
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                sessionManager.saveStudentDetails(student);
+                                                sessionManager.setReplacedMail(replacedMail);
+                                                Intent mainIntent = new Intent(FirstTimeLoginActivity.this, HomeActivity.class);
+                                                mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) student);
+                                                FirstTimeLoginActivity.this.startActivity(mainIntent);
+                                                FirstTimeLoginActivity.this.finish();
+                                            } else {
+                                                Snackbar snackbar = Snackbar.make(layout, "There was an error while submitting your password.", Snackbar.LENGTH_INDEFINITE);
+                                                snackbar.setAction("TRY AGAIN", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        signIn();
+                                                    }
+                                                });
+                                                snackbar.show();
+                                            }
                                         }
                                     });
-                                    snackbar.show();
                                 }
                             }
                         });
+
                     }
                 } else {
                     signIn();
@@ -125,6 +133,13 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public static String replaceDot(String email) {
+
+        String regexTarget = ".";
+        return email.replace(regexTarget, "-");
 
     }
 
@@ -158,7 +173,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
                         } else {
                             layout = findViewById(R.id.layout1);
-                            Snackbar snackbar = Snackbar.make(layout,"Account creation failed" , Snackbar.LENGTH_INDEFINITE);
+                            Snackbar snackbar = Snackbar.make(layout, "Account creation failed", Snackbar.LENGTH_INDEFINITE);
                             snackbar.setAction("TRY AGAIN", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

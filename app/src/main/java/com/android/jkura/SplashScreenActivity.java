@@ -14,6 +14,8 @@ import com.android.jkura.extras.ActiveSession;
 import com.android.jkura.extras.AspirantModel;
 import com.android.jkura.extras.SessionManager;
 import com.android.jkura.extras.StudentModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private final String TAG = "SplashScreen";
     private FirebaseAuth auth;
     private SessionManager sessionManager;
+    private GoogleSignInAccount mGoogleSignInAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,56 +40,63 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         sessionManager = new SessionManager(this);
 
-        Log.d(TAG, "onCreate: Reg" + sessionManager.getRegNo());
-
         auth = FirebaseAuth.getInstance();
-        //setActiveSessions();
-        //addDummyStudents();
 
-        if (sessionManager.getEmail() == null) {
-            navigateToFirstTime();
+        mGoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (sessionManager.checkLoggedIn()){
+            navigateToDashboard();
         } else {
-
-            Log.d(TAG, "onCreate: Current User" + auth.getCurrentUser().getEmail());
-
-            if (auth.getCurrentUser().getEmail().equals(sessionManager.getEmail())){
-                navigateToLogin();
-            } else {
-                sessionManager.resetData();
+            if (mGoogleSignInAccount == null){
                 navigateToFirstTime();
+            } else {
+                navigateToLogin();
             }
-
         }
 
     }
 
-    private void navigateToLogin() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference ref = firebaseDatabase.getReference("Students").child(sessionManager.getRegNo());
+    private void navigateToDashboard() {
+        Intent mainIntent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+        SplashScreenActivity.this.startActivity(mainIntent);
+        SplashScreenActivity.this.finish();
+    }
 
-        Log.d(TAG, "navigateToLogin: Reg Number "+ sessionManager.getRegNo());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void navigateToLogin() {
+        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+        DatabaseReference RegRef = firebaseDatabase.getReference("Emails").child(FirstTimeLoginActivity.replaceDot(mGoogleSignInAccount.getEmail()));
+        RegRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    Log.d(TAG, "onDataChange: Snap "+ snapshot);
-                    studentModel = snapshot.getValue(StudentModel.class);
-                    assert studentModel != null;
-                    Log.d(TAG, "onDataChange: Student "+ studentModel.getPassword());
-                    Log.d(TAG, "onDataChange: Student "+ studentModel.getStudentCourse());
-                    //hide progress
-                    Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                    mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) studentModel);
-                    SplashScreenActivity.this.startActivity(mainIntent);
-                    SplashScreenActivity.this.finish();
-                }
+                DatabaseReference ref = firebaseDatabase.getReference("Students").child(snapshot.getValue().toString());
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            Log.d(TAG, "onDataChange: Snap "+ snapshot);
+                            studentModel = snapshot.getValue(StudentModel.class);
+                            assert studentModel != null;
+                            sessionManager.saveStudentDetails(studentModel);
+                            Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                            SplashScreenActivity.this.startActivity(mainIntent);
+                            SplashScreenActivity.this.finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //display error
+                    }
+                });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //display error
+
             }
         });
+
+
     }
 
     private void navigateToFirstTime() {
@@ -155,22 +165,22 @@ public class SplashScreenActivity extends AppCompatActivity {
         StudentModel dummyStudent = new StudentModel(
                 "Bsc. Mathematics and Computer Science",
                 "Jos1234@",
-                "Josephat Ndungu Maina",
-                "SCM211-0214-2017",
-                "maina.josephat@students.jkuat.ac.ke",
+                "Jane Doe",
+                "SCM211-0226-2017",
+                "Erick Maina",
                 "School of Mathematical Sciences",
                 "Pure and Applied Mathematics",
                 0,
                 0
         );
 
-        AspirantModel dummyAspirant = new AspirantModel(
-            dummyStudent.getStudentName(),
-                dummyStudent.getStudentSchool(),
-                dummyStudent.getStudentDepartment(),
-                dummyStudent.getStudentEmail(),
-                dummyStudent.getStudentRegNo()
-        );
+//        AspirantModel dummyAspirant = new AspirantModel(
+//            dummyStudent.getStudentName(),
+//                dummyStudent.getStudentSchool(),
+//                dummyStudent.getStudentDepartment(),
+//                dummyStudent.getStudentEmail(),
+//                dummyStudent.getStudentRegNo()
+//        );
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference ref = firebaseDatabase.getReference("Students/"+dummyStudent.getStudentRegNo());
@@ -187,17 +197,17 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
 
-        DatabaseReference refAspirant = firebaseDatabase.getReference("Aspirants/"+dummyStudent.getStudentRegNo());
-        refAspirant.setValue(dummyAspirant).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(SplashScreenActivity.this, "Added Aspirant", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SplashScreenActivity.this, "Failed to add aspirant", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        DatabaseReference refAspirant = firebaseDatabase.getReference("Aspirants/"+dummyStudent.getStudentRegNo());
+//        refAspirant.setValue(dummyAspirant).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                if (task.isSuccessful()){
+//                    Toast.makeText(SplashScreenActivity.this, "Added Aspirant", Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(SplashScreenActivity.this, "Failed to add aspirant", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
 
     }
