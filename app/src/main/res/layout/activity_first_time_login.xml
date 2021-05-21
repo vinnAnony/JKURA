@@ -7,46 +7,60 @@
     android:layout_height="match_parent"
     android:background="@color/jkuraGreen">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/jkuat_logo"
+    <RelativeLayout
+        android:id="@+id/imageBackground"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/circular_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.02">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/jkuat_logo"
+            android:src="@drawable/jkuat_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.049"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.06999999" />
+
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:fontFamily="@font/montserrat_black"
         android:text="@string/jkuat"
         android:textColor="@color/white"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.365"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/imageBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageBackground" />
 
     <TextView
-        android:id="@+id/tv3"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/montserrat_medium"
         android:text="@string/election_management_system"
         android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.776"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.081" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView2"
@@ -68,11 +82,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:text="@string/first_time_login"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv3" />
+        app:layout_constraintTop_toBottomOf="@id/textView3" />
 
 
 
@@ -81,6 +95,8 @@
         style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/white"
+        app:passwordToggleEnabled="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
@@ -91,8 +107,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:inputType="textCapSentences" />
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -100,6 +117,7 @@
         style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:hint="@string/confirm_password"
@@ -109,8 +127,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:textColor="@color/white"
             android:layout_height="51dp"
-            android:inputType="textCapSentences" />
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -129,7 +148,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_password_conf"
-        app:layout_constraintVertical_bias="0.92"
+        app:layout_constraintVertical_bias="0.18"
         app:strokeColor="@color/white"
         app:strokeWidth="2dp" />
 

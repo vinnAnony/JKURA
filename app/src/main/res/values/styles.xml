@@ -12,8 +12,9 @@
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="boxStrokeWidthFocused">1.5dp</item>
         <item name="boxStrokeColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
         <item name="android:textColor">@color/white</item>
-        <item name="hintTextColor">@color/grey</item>
+        <item name="hintTextColor">@color/white</item>
         <item name="boxStrokeErrorColor">@color/jkuraRed</item>
     </style>
 </resources>

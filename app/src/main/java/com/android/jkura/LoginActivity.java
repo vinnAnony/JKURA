@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(userPassword.equals(studentModel.getPassword())){
                     sessionManager.setLoginValue(true);
                     Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                    mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) studentModel);
                     startActivity(mainIntent);
                     LoginActivity.this.finish();
                 } else {

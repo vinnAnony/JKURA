@@ -2,6 +2,7 @@ package com.android.jkura;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private StudentModel studentModel;
     private final List<ActiveSession> activeSessions = new ArrayList<>();
     private final String TAG = "Home Activity";
+    ImageView foreLogOut;
     private HashMap<String, Integer> schoolRepTally = new HashMap<>();
     private HashMap<String, Integer> delegateTally = new HashMap<>();
     private ViewPager2 pieContainer;
@@ -47,11 +49,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        foreLogOut = findViewById(R.id.imageView2);
         pieContainer = findViewById(R.id.pie_container);
         sessionManager = new SessionManager(this);
         studentModel = sessionManager.getStudentDetails();
 
         setActiveSessionsDisplay();
+
+        foreLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sessionManager.resetData();
+                Intent mainIntent = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(mainIntent);
+                HomeActivity.this.finish();
+            }
+        });
 
     }
 

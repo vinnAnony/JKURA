@@ -87,8 +87,7 @@ public class SessionManager {
 
 
     public void resetData(){
-        editor.putString(KEY_STUDENT_REG_NO, null);
-        editor.putString(KEY_STUDENT_EMAIL, null);
+        editor.putBoolean(KEY_LOGGED_IN, false);
         auth.signOut();
         editor.commit();
     }
