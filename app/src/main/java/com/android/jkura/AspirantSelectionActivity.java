@@ -29,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,9 +48,9 @@ public class AspirantSelectionActivity extends AppCompatActivity {
     private ValueEventListener mDBListener;
     private List<AspirantModel> mAspirants;
 
-    private static final String VotingPosition = "School Representative";
-    private static final String VotingSchool = "School of Mathematical Sciences";
-    private static final String VotingDepartment = "Pure and Applied Mathematics";
+    private String VotingPosition ;
+    private String VotingSchool;
+    private String VotingDepartment;
 
     private SessionManager sessionManager;
 
@@ -63,9 +64,6 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         aspirantDepartmentTV = findViewById(R.id.aspirantDepartment);
         aspirantSchoolTV = findViewById(R.id.aspirantSchool);
         aspirantPositionTV = findViewById(R.id.aspirantPosition);
-        aspirantPositionTV.setText(VotingPosition);
-        aspirantDepartmentTV.setText(VotingDepartment);
-        aspirantSchoolTV.setText(VotingSchool);
 
         mRecyclerView = findViewById(R.id.aspirantsRV);
         mRecyclerView.setHasFixedSize(true);
@@ -75,6 +73,7 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         mProgressBarRL = findViewById(R.id.aspirantSelectPBRL);
 
         showLoader();
+        loadVoteSessionInfo();
 
         mAspirants = new ArrayList<>();
         mAdapter = new AspirantSelectionAdapter (AspirantSelectionActivity.this, mAspirants, VotingPosition,VotingDepartment,VotingSchool);
@@ -130,7 +129,17 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         }
 
     }
+    private void loadVoteSessionInfo(){
+        Intent i=this.getIntent();
+        VotingPosition=i.getExtras().getString("POSITION_KEY");
+        VotingDepartment=i.getExtras().getString("DEPARTMENT_KEY");
+        VotingSchool=i.getExtras().getString("SCHOOL_KEY");
 
+
+        aspirantPositionTV.setText(VotingPosition);
+        aspirantDepartmentTV.setText(VotingDepartment);
+        aspirantSchoolTV.setText(VotingSchool);
+    }
     private String getVotersInfo(){
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
@@ -155,7 +164,7 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         regNoQuery.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String studentRegNo;
                         for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                             studentRegNo = postSnapshot.child("studentRegNo").getValue(String.class);
@@ -166,7 +175,7 @@ public class AspirantSelectionActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.e("TAG", "Failed to read value.", databaseError.toException());
                     }
                 });

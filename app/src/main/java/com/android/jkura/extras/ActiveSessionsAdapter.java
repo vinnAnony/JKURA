@@ -1,5 +1,6 @@
 package com.android.jkura.extras;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.jkura.AspirantSelectionActivity;
 import com.android.jkura.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -31,7 +33,11 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
         holder.actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.clicked();
+                Intent intent = new Intent(v.getContext(),AspirantSelectionActivity.class);
+                intent.putExtra("POSITION_KEY",session.getPosition());
+                intent.putExtra("DEPARTMENT_KEY", session.getDepartment());
+                intent.putExtra("SCHOOL_KEY",session.getSchool());
+                v.getContext().startActivity(intent);
             }
         });
     }
@@ -52,10 +58,6 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
             sessionName = itemView.findViewById(R.id.sessionName);
             actionButton= itemView.findViewById(R.id.sessionActionBtn);
             
-        }
-
-        public void clicked() {
-
         }
     }
 

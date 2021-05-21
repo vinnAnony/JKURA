@@ -51,14 +51,6 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         studentModel = sessionManager.getStudentDetails();
 
-        ImageView goAsp = findViewById(R.id.imageView2);
-        goAsp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, AspirantSelectionActivity.class));
-            }
-        });
-
         setActiveSessionsDisplay();
 
     }
