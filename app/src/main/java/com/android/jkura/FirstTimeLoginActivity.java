@@ -85,7 +85,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                                 "Bsc. Mathematics and Computer Science",
                                 password,
                                 "John Doe",
-                                "SCM211-0212-2017",
+                                "SCM 211-0212-2017",
                                 mAuth.getCurrentUser().getEmail(),
                                 "School of Mathematical Sciences",
                                 "Pure and Applied Mathematics",

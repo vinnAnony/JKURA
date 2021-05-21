@@ -41,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         //setActiveSessions();
-        //addDummyStudents();
+        addDummyData();
 
         if (sessionManager.getEmail() == null) {
             navigateToFirstTime();
@@ -155,22 +155,22 @@ public class SplashScreenActivity extends AppCompatActivity {
         StudentModel dummyStudent = new StudentModel(
                 "Bsc. Mathematics and Computer Science",
                 "Jos1234@",
-                "Josephat Ndungu Maina",
-                "SCM211-0214-2017",
-                "maina.josephat@students.jkuat.ac.ke",
+                "Jane Doe",
+                "SCM211-0226-2017",
+                "Erick Maina",
                 "School of Mathematical Sciences",
                 "Pure and Applied Mathematics",
                 0,
                 0
         );
 
-        AspirantModel dummyAspirant = new AspirantModel(
-            dummyStudent.getStudentName(),
-                dummyStudent.getStudentSchool(),
-                dummyStudent.getStudentDepartment(),
-                dummyStudent.getStudentEmail(),
-                dummyStudent.getStudentRegNo()
-        );
+//        AspirantModel dummyAspirant = new AspirantModel(
+//            dummyStudent.getStudentName(),
+//                dummyStudent.getStudentSchool(),
+//                dummyStudent.getStudentDepartment(),
+//                dummyStudent.getStudentEmail(),
+//                dummyStudent.getStudentRegNo()
+//        );
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference ref = firebaseDatabase.getReference("Students/"+dummyStudent.getStudentRegNo());
@@ -187,17 +187,17 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
 
-        DatabaseReference refAspirant = firebaseDatabase.getReference("Aspirants/"+dummyStudent.getStudentRegNo());
-        refAspirant.setValue(dummyAspirant).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(SplashScreenActivity.this, "Added Aspirant", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SplashScreenActivity.this, "Failed to add aspirant", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        DatabaseReference refAspirant = firebaseDatabase.getReference("Aspirants/"+dummyStudent.getStudentRegNo());
+//        refAspirant.setValue(dummyAspirant).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                if (task.isSuccessful()){
+//                    Toast.makeText(SplashScreenActivity.this, "Added Aspirant", Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(SplashScreenActivity.this, "Failed to add aspirant", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
 
     }
