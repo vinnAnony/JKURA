@@ -1,6 +1,7 @@
 package com.android.jkura.extras;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.jkura.R;
@@ -67,7 +69,10 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
     }
 
 
-    private void initializeTallyAnalysis(HashMap<String, Integer> voteTallies, ViewHolder holder) {
+
+    private void initializeTallyAnalysis(HashMap<String, Integer> votes, ViewHolder holder) {
+
+        HashMap<String, Integer> voteTallies = new HashMap<>(votes);
 
         Log.d(TAG, "initializeTallyAnalysis: VoteTally " + voteTallies);
         int title = voteTallies.get("Title");
@@ -77,6 +82,8 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
             holder.title.setText("Delegate");
         }
         voteTallies.remove("Title");
+        Log.d(TAG, "initializeTallyAnalysis: VoteTally " + voteTallies);
+
 
         if (voteTallies.size() > 2){
             List<String> regNoByPosition = new ArrayList<>();
@@ -187,13 +194,11 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot != null){
-                    String value = snapshot.getValue().toString();
+                String value = snapshot.getValue().toString();
 
-                    String[] names = value.split(" ");
-                    regNameManager.setRegName(reg, names[0]);
-                    notifyDataSetChanged();
-                }
+                String[] names = value.split(" ");
+                regNameManager.setRegName(reg, names[0]);
+                notifyDataSetChanged();
             }
 
             @Override
