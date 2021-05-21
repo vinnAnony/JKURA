@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
         editTextPassword = findViewById(R.id.et_password);
-        studentModel = getIntent().getParcelableExtra(KEY_STUDENT);
+        studentModel = sessionManager.getStudentDetails();
 
         currentUserEmail = findViewById(R.id.loggedEmail);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
@@ -58,10 +58,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 String userPassword = Objects.requireNonNull(editTextPassword.getEditText()).getText().toString().trim();
 
-                Log.d(TAG, "onClick: Database " + studentModel.getPassword());
-                Log.d(TAG, "onClick: Entered" + userPassword);
                 editTextPassword.setError(null);
                 if(userPassword.equals(studentModel.getPassword())){
+                    sessionManager.setLoginValue(true);
                     Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     mainIntent.putExtra(LoginActivity.KEY_STUDENT, (Parcelable) studentModel);
                     startActivity(mainIntent);

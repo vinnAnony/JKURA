@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/title"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/jkuraGreen"
+        android:textAlignment="center"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="15sp"
+        android:text="@string/title"/>
+
 
     <com.razerdp.widget.animatedpieview.AnimatedPieView
         android:id="@+id/pie_chart"

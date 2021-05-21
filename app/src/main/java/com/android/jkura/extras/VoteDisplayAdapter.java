@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,10 +57,12 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         AnimatedPieView animatedPieView;
+        TextView title;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-           animatedPieView  = itemView.findViewById(R.id.pie_chart);
+            title = itemView.findViewById(R.id.title);
+            animatedPieView  = itemView.findViewById(R.id.pie_chart);
         }
     }
 
@@ -67,6 +70,13 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
     private void initializeTallyAnalysis(HashMap<String, Integer> voteTallies, ViewHolder holder) {
 
         Log.d(TAG, "initializeTallyAnalysis: VoteTally " + voteTallies);
+        int title = voteTallies.get("Title");
+        if (title == 1){
+            holder.title.setText("School Representative");
+        } else {
+            holder.title.setText("Delegate");
+        }
+        voteTallies.remove("Title");
 
         if (voteTallies.size() > 2){
             List<String> regNoByPosition = new ArrayList<>();
@@ -98,8 +108,8 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
 
                 AnimatedPieViewConfig config = new AnimatedPieViewConfig();
                 config.startAngle(-90)// Starting angle offset
-                        .addData(new SimplePieInfo(voteTallies.get(positionOneReg), mContext.getResources().getColor(R.color.pieBlue), positionOneReg))//Data (bean that implements the IPieInfo interface)
-                        .addData(new SimplePieInfo(voteTallies.get(positionTwoReg), mContext.getResources().getColor(R.color.pieYellow), positionTwoReg))
+                        .addData(new SimplePieInfo(voteTallies.get(regNoByPosition.get(0)), mContext.getResources().getColor(R.color.pieBlue), positionOneReg))//Data (bean that implements the IPieInfo interface)
+                        .addData(new SimplePieInfo(voteTallies.get(regNoByPosition.get(1)), mContext.getResources().getColor(R.color.pieYellow), positionTwoReg))
                         .addData(new SimplePieInfo(othersTotal, mContext.getResources().getColor(R.color.pieOthers), "Others"))
                         .duration(2000)
                         .drawText(true)
@@ -114,9 +124,15 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
             for (Map.Entry tallyElement : voteTallies.entrySet()) {
                 positionOneReg = tallyElement.getKey().toString();
             }
+
+            if (regNameManager.getRegName(positionOneReg) == null){
+                fetchRegNameDetails(positionOneReg);
+            }
+
+            String positionOneName = ((regNameManager.getRegName(positionOneReg) == null) ? positionOneReg : regNameManager.getRegName(positionOneReg));
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.startAngle(-90)// Starting angle offset
-                    .addData(new SimplePieInfo(voteTallies.get(positionOneReg), mContext.getResources().getColor(R.color.pieBlue), positionOneReg))//Data (bean that implements the IPieInfo interface)
+                    .addData(new SimplePieInfo(voteTallies.get(positionOneReg), mContext.getResources().getColor(R.color.pieBlue), positionOneName))//Data (bean that implements the IPieInfo interface)
                     .duration(2000)
                     .drawText(true)
                     .textSize(30);// draw pie animation duration
@@ -152,8 +168,8 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
 
             AnimatedPieViewConfig config = new AnimatedPieViewConfig();
             config.startAngle(-90)// Starting angle offset
-                    .addData(new SimplePieInfo(voteTallies.get(positionOneReg), mContext.getResources().getColor(R.color.pieBlue), positionOneReg))//Data (bean that implements the IPieInfo interface)
-                    .addData(new SimplePieInfo(voteTallies.get(positionTwoReg), mContext.getResources().getColor(R.color.pieYellow), positionTwoReg))//Data (bean that implements the IPieInfo interface)
+                    .addData(new SimplePieInfo(voteTallies.get(regNoByPosition.get(0)), mContext.getResources().getColor(R.color.pieBlue), positionOneReg))//Data (bean that implements the IPieInfo interface)
+                    .addData(new SimplePieInfo(voteTallies.get(regNoByPosition.get(1)), mContext.getResources().getColor(R.color.pieYellow), positionTwoReg))//Data (bean that implements the IPieInfo interface)
                     .duration(2000)
                     .drawText(true)
                     .textSize(30);// draw pie animation duration
@@ -168,14 +184,14 @@ public class VoteDisplayAdapter extends RecyclerView.Adapter<VoteDisplayAdapter.
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference ref = firebaseDatabase.getReference("Students").child(reg).child("studentName");
 
-        Log.d(TAG, "fetchRegNameDetails: reg "+ reg);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot != null){
-                    Log.d(TAG, "onDataChange: Name "+ snapshot);
                     String value = snapshot.getValue().toString();
-                    regNameManager.setRegName(reg, value);
+
+                    String[] names = value.split(" ");
+                    regNameManager.setRegName(reg, names[0]);
                     notifyDataSetChanged();
                 }
             }

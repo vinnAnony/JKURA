@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.android.jkura.extras.ActiveSession;
 import com.android.jkura.extras.ActiveSessionsAdapter;
+import com.android.jkura.extras.SessionManager;
 import com.android.jkura.extras.StudentModel;
 import com.android.jkura.extras.VoteDisplayAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     private HashMap<String, Integer> schoolRepTally = new HashMap<>();
     private HashMap<String, Integer> delegateTally = new HashMap<>();
     private ViewPager2 pieContainer;
+    private SessionManager sessionManager;
 
 
     @Override
@@ -46,8 +48,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         pieContainer = findViewById(R.id.pie_container);
-
-        studentModel = getIntent().getParcelableExtra(LoginActivity.KEY_STUDENT);
+        sessionManager = new SessionManager(this);
+        studentModel = sessionManager.getStudentDetails();
 
         ImageView goAsp = findViewById(R.id.imageView2);
         goAsp.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +130,7 @@ public class HomeActivity extends AppCompatActivity {
                     voteTallies.put(aspirantReg, tally);
                 }
 
+                voteTallies.put("Title", 1);
                 schoolRepTally = voteTallies;
 
                 if (checkIfDelegateActive()){
@@ -166,6 +169,7 @@ public class HomeActivity extends AppCompatActivity {
                     voteTallies.put(aspirantReg, tally);
                 }
 
+                voteTallies.put("Title", 2);
                 delegateTally = voteTallies;
                 initializeLinearRecycler();
 
