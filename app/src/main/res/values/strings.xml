@@ -22,4 +22,6 @@
     <string name="vote">Vote</string>
     <string name="provide_pass">Please provide a password for your account</string>
     <string name="title">Title</string>
+    <string name="login_error">LOGIN ERROR</string>
+    <string name="email_error">You have selected an email address that isn\'t a JKUAT student\'s email address. Please select your student email address to continue.</string>
 </resources>

@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.jkura.extras.SessionManager;
@@ -27,7 +30,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -71,9 +78,9 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (mAuth.getCurrentUser().getEmail() != null) {
-                    String password = editTextPassword.getEditText().getText().toString().trim();
-                    String passwordConfirm = editTextConfirmPass.getEditText().getText().toString().trim();
+                if (Objects.requireNonNull(mAuth.getCurrentUser()).getEmail() != null) {
+                    String password = Objects.requireNonNull(editTextPassword.getEditText()).getText().toString().trim();
+                    String passwordConfirm = Objects.requireNonNull(editTextConfirmPass.getEditText()).getText().toString().trim();
 
                     if (password.equals(passwordConfirm)) {
 
@@ -93,7 +100,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                         final DatabaseReference ref = firebaseDatabase.getReference("Students/" + student.getStudentRegNo());
 
-                        final String replacedMail = replaceDot(mAuth.getCurrentUser().getEmail());
+                        final String replacedMail = replaceDot(Objects.requireNonNull(mAuth.getCurrentUser().getEmail()));
 
                         DatabaseReference RegRef = firebaseDatabase.getReference("Emails/" + replacedMail);
                         RegRef.setValue(student.getStudentRegNo()).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -153,11 +160,59 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
-                firebaseAuthWithGoogle(account.getIdToken());
+                boolean result = explodeEmail(Objects.requireNonNull(account.getEmail()));
+                if(result){
+                    firebaseAuthWithGoogle(account.getIdToken());
+                }
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
             }
         }
+    }
+
+    private boolean explodeEmail(String email) {
+        String[] atSignSplit = email.split("@");
+        Log.d(TAG, "explodeEmail: First" + Arrays.toString(atSignSplit));
+
+        String[] domainSplit = atSignSplit[1].split("\\.");
+        Log.d(TAG, "explodeEmail: Second" + Arrays.toString(domainSplit));
+
+        if (domainSplit[1].equals("jkuat")){
+            if (domainSplit[0].equals("students")) {
+                return true;
+            }else{
+                displayError();
+                return false;
+            }
+        } else {
+            displayError();
+            return false;
+        }
+
+    }
+
+    private void displayError() {
+
+        mGoogleSignInClient.signOut();
+
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.email_account_error_popup, viewGroup, false);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(false);
+        final AlertDialog confirmVoteDialog = builder.create();
+        confirmVoteDialog.show();
+
+        Button okButton = dialogView.findViewById(R.id.popCancelBtn);
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmVoteDialog.dismiss();
+                signIn();
+            }
+        });
+
     }
 
 
