@@ -2,9 +2,11 @@ package com.android.jkura;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android.jkura.extras.ActiveSession;
@@ -12,25 +14,25 @@ import com.android.jkura.extras.ActiveSessionsAdapter;
 import com.android.jkura.extras.SessionManager;
 import com.android.jkura.extras.StudentModel;
 import com.android.jkura.extras.VoteDisplayAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.razerdp.widget.animatedpieview.AnimatedPieView;
-import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
-import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -42,27 +44,31 @@ public class HomeActivity extends AppCompatActivity {
     private HashMap<String, Integer> delegateTally = new HashMap<>();
     private ViewPager2 pieContainer;
     private SessionManager sessionManager;
-
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        foreLogOut = findViewById(R.id.imageView2);
+        foreLogOut = findViewById(R.id.logoutImg);
         pieContainer = findViewById(R.id.pie_container);
         sessionManager = new SessionManager(this);
         studentModel = sessionManager.getStudentDetails();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         setActiveSessionsDisplay();
 
         foreLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sessionManager.resetData();
-                Intent mainIntent = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(mainIntent);
-                HomeActivity.this.finish();
+                logoutPrompt();
             }
         });
 
@@ -234,4 +240,33 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void logoutPrompt() {
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.logout_confirm_popup, viewGroup, false);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(false);
+        final AlertDialog confirmLogoutDialog = builder.create();
+        confirmLogoutDialog.show();
+
+        Button yesButton = dialogView.findViewById(R.id.popYesBtn);
+        Button noButton = dialogView.findViewById(R.id.popNoBtn);
+
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sessionManager.resetData();
+                mGoogleSignInClient.signOut();
+                Intent mainIntent = new Intent(HomeActivity.this, FirstTimeLoginActivity.class);
+                startActivity(mainIntent);
+                HomeActivity.this.finishAffinity();
+            }
+        });
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmLogoutDialog.dismiss();
+            }
+        });
+    }
 }

@@ -2,6 +2,8 @@ package com.android.jkura;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.jkura.extras.SessionManager;
 import com.android.jkura.extras.StudentModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -52,6 +54,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
 
+    boolean doubleBackToExitPressedOnce = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +170,26 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
             }
+        }
+        if (resultCode==RESULT_CANCELED) {
+
+            if (doubleBackToExitPressedOnce) {
+                finishAffinity();
+                return;
+            }
+            else {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please select an account to continue or click BACK again to exit", Toast.LENGTH_LONG).show();
+                signIn();
+            }
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 8000);
         }
     }
 
