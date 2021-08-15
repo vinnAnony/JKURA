@@ -9,7 +9,7 @@
 
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="boxStrokeWidthFocused">1.5dp</item>
         <item name="boxStrokeColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>

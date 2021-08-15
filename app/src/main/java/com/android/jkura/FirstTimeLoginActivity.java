@@ -46,7 +46,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     private TextInputLayout editTextPassword, editTextConfirmPass;
-    private TextView firstTimeTextView;
+    private TextView firstTimeTextView, emailNoticeTextView;
     private MaterialButton submitButton;
     private ConstraintLayout layout;
 
@@ -63,6 +63,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.et_password);
         editTextConfirmPass = findViewById(R.id.et_password_conf);
         submitButton = findViewById(R.id.submitPass);
+        emailNoticeTextView = findViewById(R.id.email_notice);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -215,6 +216,22 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
     }
 
+    private void setContentVisible(){
+        editTextConfirmPass.setVisibility(View.VISIBLE);
+        editTextPassword.setVisibility(View.VISIBLE);
+        submitButton.setVisibility(View.VISIBLE);
+        firstTimeTextView.setText(R.string.provide_pass);
+        emailNoticeTextView.setVisibility(View.INVISIBLE);
+    }
+
+//    private void setContentInvisible(){
+//        editTextConfirmPass.setVisibility(View.INVISIBLE);
+//        editTextPassword.setVisibility(View.INVISIBLE);
+//        submitButton.setVisibility(View.INVISIBLE);
+//        firstTimeTextView.setText(R.string.first_time_login);
+//        emailNoticeTextView.setVisibility(View.VISIBLE);
+//    }
+
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -224,7 +241,7 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            firstTimeTextView.setText(R.string.provide_pass);
+                           setContentVisible();
 
                         } else {
                             layout = findViewById(R.id.layout1);
