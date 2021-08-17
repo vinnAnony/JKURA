@@ -5,15 +5,11 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.jkura.extras.AspirantModel;
 import com.android.jkura.extras.AspirantSelectionAdapter;
@@ -22,7 +18,6 @@ import com.android.jkura.extras.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,11 +28,8 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -138,63 +130,6 @@ public class AspirantSelectionActivity extends AppCompatActivity {
             snackbar.show();
         }
 
-        checkIfVoted();
-
-    }
-
-    private void checkIfVoted() {
-
-        DatabaseReference voteRef;
-
-        if (VotingPosition.equals("Delegate"))
-            voteRef = FirebaseDatabase.getInstance().getReference("Votes/"+VotingSchool+"/"+VotingDepartment+"/"+VotingPosition);
-        else
-            voteRef = FirebaseDatabase.getInstance().getReference("Votes/"+VotingSchool+"/"+VotingPosition);
-
-        voteRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snap : snapshot.getChildren()){
-                    for (DataSnapshot vote: snap.getChildren()){
-                        Log.d("Data", "onDataChange: "+vote);
-                        if (Objects.equals(vote.getValue(String.class), sessionManager.getRegNo())){
-                            populateVotedAlert();
-                        }
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    private void populateVotedAlert() {
-        ViewGroup viewGroup = findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.voted_alert, viewGroup, false);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialogView)
-                .setCancelable(false);
-        final AlertDialog confirmLogoutDialog = builder.create();
-        confirmLogoutDialog.show();
-
-        Button okButton = dialogView.findViewById(R.id.popOkBtn);
-
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                confirmLogoutDialog.dismiss();
-                sessionManager.resetData();
-                Intent mainIntent = new Intent(AspirantSelectionActivity.this, HomeActivity.class);
-                startActivity(mainIntent);
-                AspirantSelectionActivity.this.finishAffinity();
-            }
-        });
     }
 
     private void loadVoteSessionInfo(){

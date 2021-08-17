@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        ActiveSessionsAdapter adapter = new ActiveSessionsAdapter();
+        ActiveSessionsAdapter adapter = new ActiveSessionsAdapter(this);
         RecyclerView recyclerView = findViewById(R.id.activeSessions);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
