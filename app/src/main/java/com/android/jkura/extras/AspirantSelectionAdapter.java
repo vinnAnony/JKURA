@@ -55,8 +55,14 @@ public class AspirantSelectionAdapter extends RecyclerView.Adapter<AspirantSelec
         holder.aspirantCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] aspData = {currentAspirant.getAspirantName(),currentAspirant.getAspirantCourse(), currentAspirant.getAspirantImageURL(),
-                        currentAspirant.getAspirantRegNo(),aspirantPosition,aspirantDepartment,aspirantSchool};
+                String[] aspData = {
+                        currentAspirant.getAspirantName(),
+                        currentAspirant.getAspirantCourse(),
+                        currentAspirant.getAspirantImageURL(),
+                        currentAspirant.getAspirantRegNo(),
+                        aspirantPosition,
+                        aspirantDepartment,
+                        aspirantSchool};
                 openDetailActivity(aspData);
             }
         });
