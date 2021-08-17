@@ -168,7 +168,7 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
         final String pass = popPassword.getText().toString();
         final String[] fbPass = new String[1];
         if (pass!=null && !pass.equals("")){
-            mVoterRef.addValueEventListener(new ValueEventListener() {
+            mVoterRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     fbPass[0] = dataSnapshot.child("password").getValue(String.class);
@@ -239,7 +239,7 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
             voteType = "schRepVoted";
 
         final String finalVoteType = voteType;
-        mVoterRef.addValueEventListener(new ValueEventListener() {
+        mVoterRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int voteStatus = dataSnapshot.child(finalVoteType).getValue(Integer.class);

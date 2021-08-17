@@ -92,7 +92,7 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
             voteType = "schRepVoted";
 
         final String finalVoteType = voteType;
-        mVoterRef.addValueEventListener(new ValueEventListener() {
+        mVoterRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int voteStatus = dataSnapshot.child(finalVoteType).getValue(Integer.class);
