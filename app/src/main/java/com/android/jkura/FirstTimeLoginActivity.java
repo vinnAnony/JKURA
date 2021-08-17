@@ -29,11 +29,16 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -88,12 +93,14 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
                     if (password.equals(passwordConfirm)) {
 
+                        Random random = new Random();
+                        int randomNumber = 100 + random.nextInt(700);
                         //emulate fetch details from school server to get email details
                         final StudentModel student = new StudentModel(
                                 "Bsc. Mathematics and Computer Science",
                                 password,
                                 "John Doe",
-                                "SCM211-0252-2017",
+                                "SCM211-"+randomNumber+"-2017",
                                 mAuth.getCurrentUser().getEmail(),
                                 "School of Mathematical Sciences",
                                 "Pure and Applied Mathematics",
@@ -162,11 +169,30 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                final GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
                 boolean result = explodeEmail(Objects.requireNonNull(account.getEmail()));
                 if(result){
-                    firebaseAuthWithGoogle(account.getIdToken());
+
+                    String email = replaceDot(account.getEmail());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference("Emails/"+email);
+
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                navigateToLogin();
+                            } else {
+                                firebaseAuthWithGoogle(account.getIdToken());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
@@ -192,6 +218,11 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                 }
             }, 8000);
         }
+    }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(FirstTimeLoginActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     private boolean explodeEmail(String email) {
