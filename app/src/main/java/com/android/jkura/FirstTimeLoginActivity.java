@@ -29,10 +29,14 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
@@ -165,11 +169,30 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                final GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
                 boolean result = explodeEmail(Objects.requireNonNull(account.getEmail()));
                 if(result){
-                    firebaseAuthWithGoogle(account.getIdToken());
+
+                    String email = replaceDot(account.getEmail());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference("Emails/"+email);
+
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                navigateToLogin();
+                            } else {
+                                firebaseAuthWithGoogle(account.getIdToken());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
@@ -195,6 +218,11 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
                 }
             }, 8000);
         }
+    }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(FirstTimeLoginActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     private boolean explodeEmail(String email) {
