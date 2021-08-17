@@ -2,7 +2,6 @@ package com.android.jkura;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 
 import com.android.jkura.extras.CheckNet;
 import com.android.jkura.extras.SessionManager;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
@@ -29,7 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -39,7 +35,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class VoteSubmissionActivity extends AppCompatActivity implements View.OnClickListener {
@@ -213,6 +208,7 @@ public class VoteSubmissionActivity extends AppCompatActivity implements View.On
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(VoteSubmissionActivity.this, "Thanks for voting!", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(VoteSubmissionActivity.this,HomeActivity.class));
+                        finishAffinity();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
