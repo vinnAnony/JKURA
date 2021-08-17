@@ -188,11 +188,11 @@ public class AspirantSelectionActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                confirmLogoutDialog.dismiss();
                 sessionManager.resetData();
                 Intent mainIntent = new Intent(AspirantSelectionActivity.this, HomeActivity.class);
                 startActivity(mainIntent);
                 AspirantSelectionActivity.this.finishAffinity();
-                confirmLogoutDialog.dismiss();
             }
         });
     }
