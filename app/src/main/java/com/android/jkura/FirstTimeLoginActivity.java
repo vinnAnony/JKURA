@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -88,12 +89,14 @@ public class FirstTimeLoginActivity extends AppCompatActivity {
 
                     if (password.equals(passwordConfirm)) {
 
+                        Random random = new Random();
+                        int randomNumber = 100 + random.nextInt(700);
                         //emulate fetch details from school server to get email details
                         final StudentModel student = new StudentModel(
                                 "Bsc. Mathematics and Computer Science",
                                 password,
                                 "John Doe",
-                                "SCM211-0252-2017",
+                                "SCM211-"+randomNumber+"-2017",
                                 mAuth.getCurrentUser().getEmail(),
                                 "School of Mathematical Sciences",
                                 "Pure and Applied Mathematics",
